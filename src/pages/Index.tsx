@@ -1,90 +1,90 @@
-
-import OrganizationCard from "@/components/organization/OrganizationCard";
-import ProjectCard from "@/components/project/ProjectCard";
-import CharacterCard from "@/components/character/CharacterCard";
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
+import CharacterCard from "@/components/character/CharacterCard";
+import ExperienceCard from "@/components/experience/ExperienceCard";
+import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const organization = {
-  name: "Studio Alpha",
-  members: [
-    { name: "Alice", role: "Admin" },
-    { name: "Bob", role: "Member" }
-  ]
-};
-
-const projects = [
-  { name: "Sci-Fi NPCs", billingPlan: "Pro Tier", characters: 5 },
-  { name: "Fantasy NPCs", billingPlan: "Free Tier", characters: 3 }
-];
-
-const characters = [
-  { name: "Captain", persona: "Bold" },
-  { name: "Navigator", persona: "Wise" },
-  { name: "Scientist", persona: "Curious" },
-  { name: "Android", persona: "Logical" }
-];
-
 const Index = () => {
+  const recentCharacters = [
+    {
+      name: "Monica Geller",
+      persona: "Perfectionist",
+      description: "Monica Geller is a perfectionist with a passion for cooking. She's known for her competitive nature and obsession with cleanliness and organization.",
+      imageUrl: "https://api.dicebear.com/7.x/personas/svg?seed=Monica&backgroundColor=0B1120"
+    },
+    {
+      name: "Joey Tribbiani",
+      persona: "Charming",
+      description: "You are the lovable and charming Joey Tribbiani, from New York. An aspiring actor with a big heart and an even bigger appetite.",
+      imageUrl: "https://api.dicebear.com/7.x/personas/svg?seed=Joey&backgroundColor=0B1120"
+    },
+    {
+      name: "xyz",
+      persona: "Mysterious",
+      description: "In the quaint town of Willow Creek, you are known as the enigmatic figure who appears at twilight, sharing cryptic wisdom.",
+      imageUrl: "https://api.dicebear.com/7.x/personas/svg?seed=xyz&backgroundColor=0B1120"
+    },
+    {
+      name: "Flyona",
+      persona: "Ambitious",
+      description: "You are Flyona or Fly Gull, who was propelled to success by her determination and wit in the competitive world of journalism.",
+      imageUrl: "https://api.dicebear.com/7.x/personas/svg?seed=Flyona&backgroundColor=0B1120"
+    }
+  ];
+
+  const recentExperiences = [
+    {
+      name: "Coffee Shop Chat",
+      description: "A cozy conversation with a friendly barista who shares stories about their coffee journey and customer experiences.",
+      imageUrl: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      name: "Tech Interview",
+      description: "A technical interview simulation with a senior software engineer, focusing on problem-solving and coding challenges.",
+      imageUrl: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      name: "Travel Guide",
+      description: "An enthusiastic local guide sharing hidden gems and cultural insights about their city's most interesting spots.",
+      imageUrl: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80"
+    }
+  ];
+
   return (
-    <div className="space-y-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">My Dashboard</h1>
-        <Button className="bg-green-700 hover:bg-green-800 text-white">
-          <PlusIcon className="mr-2 h-4 w-4" /> Create a new character
-        </Button>
-      </div>
-      
-      <div>
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Recent Characters</h2>
-          <Link to="/characters" className="text-green-700 hover:text-green-800">
-            See all characters →
+    <div className="space-y-8 p-8 bg-gray-950 min-h-screen">
+      {/* Recent Characters Section */}
+      <section>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-emerald-400">Recent Characters</h2>
+          <Link to="/characters">
+            <Button variant="ghost" className="text-emerald-400 hover:text-emerald-300 hover:bg-[#1a2234]">
+              See all characters <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
           </Link>
         </div>
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-          {characters.map((character) => (
-            <CharacterCard 
-              key={character.name}
-              name={character.name}
-              persona={character.persona}
-            />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {recentCharacters.map((character) => (
+            <CharacterCard key={character.name} {...character} />
           ))}
         </div>
-      </div>
-      
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Organization Dashboard</h2>
-        <OrganizationCard name={organization.name} members={organization.members} />
-      </div>
-      
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Projects Overview</h2>
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
-            <ProjectCard 
-              key={project.name}
-              name={project.name}
-              billingPlan={project.billingPlan}
-              characters={project.characters}
-            />
-          ))}
-        </div>
-      </div>
+      </section>
 
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Sample Characters</h2>
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-          {characters.slice(0, 2).map((character, index) => (
-            <CharacterCard 
-              key={`sample-${index}`}
-              name={`Sample ${character.name}`}
-              persona={character.persona}
-            />
+      {/* Recent Experiences Section */}
+      <section>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-emerald-400">Recent Experiences</h2>
+          <Link to="/experiences">
+            <Button variant="ghost" className="text-emerald-400 hover:text-emerald-300 hover:bg-[#1a2234]">
+              See all experiences <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {recentExperiences.map((experience) => (
+            <ExperienceCard key={experience.name} {...experience} />
           ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 };

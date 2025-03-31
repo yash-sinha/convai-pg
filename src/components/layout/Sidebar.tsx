@@ -1,115 +1,101 @@
-
 import { cn } from "@/lib/utils";
-import { Link, useLocation } from "react-router-dom";
-import { 
-  LayoutDashboard, 
-  Users, 
-  FolderKanban, 
-  CreditCard, 
+import {
+  BarChart,
+  Building2,
+  Command,
+  CreditCard,
+  FileText,
   Settings,
-  PlusCircle,
-  VideoIcon
+  Sparkles,
+  Users,
 } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
-interface SidebarItemProps {
-  icon: React.ElementType;
-  label: string;
-  path: string;
-  active?: boolean;
-}
-
-const SidebarItem = ({ icon: Icon, label, path, active }: SidebarItemProps) => (
-  <Link 
-    to={path}
-    className={cn(
-      "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-green-700/50",
-      active ? "bg-green-700/50 text-white font-medium" : "text-white/80"
-    )}
-  >
-    <Icon className="h-4 w-4" />
-    <span>{label}</span>
-  </Link>
-);
+const navigation = [
+  {
+    name: "Dashboard",
+    href: "/",
+    icon: Building2,
+  },
+  {
+    name: "Characters",
+    href: "/characters",
+    icon: Users,
+  },
+  {
+    name: "Experiences",
+    href: "/experiences",
+    icon: Sparkles,
+  },
+  {
+    name: "Analytics",
+    href: "/analytics",
+    icon: BarChart,
+  },
+  {
+    name: "Billing",
+    href: "/billing",
+    icon: CreditCard,
+  },
+  {
+    name: "Knowledge Bank",
+    href: "/knowledge-bank",
+    icon: FileText,
+  },
+  {
+    name: "Manage Project",
+    href: "/project-settings",
+    icon: Settings,
+  },
+];
 
 const Sidebar = () => {
   const location = useLocation();
-  
+
   return (
-    <div className="hidden md:flex h-full w-64 flex-col bg-green-900">
-      {/* Logo area */}
-      <div className="p-4 border-b border-green-800">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="text-white text-2xl font-bold">convai</div>
-        </Link>
-      </div>
+    <aside className="fixed inset-y-0 z-50 flex w-60 flex-col bg-black">
+      <nav className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-neutral-800/30 px-6 py-4">
+        <div className="flex items-center gap-3 px-4 py-4">
+          <div className="w-8 h-8 text-emerald-400">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4h6v6H4V4z" className="fill-emerald-500"/>
+              <path d="M14 4h6v6h-6V4z" className="fill-emerald-400"/>
+              <path d="M4 14h6v6H4v-6z" className="fill-emerald-400"/>
+              <path d="M14 14h6v6h-6v-6z" className="fill-emerald-300"/>
+            </svg>
+          </div>
+          <div className="font-medium text-2xl text-white tracking-tight">
+            convai
+          </div>
+        </div>
 
-      {/* Main navigation */}
-      <div className="flex flex-col gap-1 p-4">
-        <SidebarItem 
-          icon={LayoutDashboard} 
-          label="Dashboard" 
-          path="/" 
-          active={location.pathname === "/"}
-        />
-      </div>
-
-      {/* Character's Mind Section */}
-      <div className="px-4 pt-6 pb-2">
-        <h3 className="text-xs font-medium text-white/50 uppercase tracking-wider">Character's Mind</h3>
-      </div>
-      <div className="flex flex-col gap-1 px-4">
-        <SidebarItem 
-          icon={Users} 
-          label="My Characters" 
-          path="/characters" 
-          active={location.pathname === "/characters"}
-        />
-        <SidebarItem 
-          icon={PlusCircle} 
-          label="Create Character" 
-          path="/characters/create" 
-          active={location.pathname === "/characters/create"}
-        />
-      </div>
-
-      {/* Spatial Experiences Section */}
-      <div className="px-4 pt-6 pb-2">
-        <h3 className="text-xs font-medium text-white/50 uppercase tracking-wider">Spatial Experiences</h3>
-      </div>
-      <div className="flex flex-col gap-1 px-4">
-        <SidebarItem 
-          icon={VideoIcon} 
-          label="My Experiences" 
-          path="/experiences" 
-          active={location.pathname === "/experiences"}
-        />
-      </div>
-
-      {/* Original sidebar items at bottom (can be removed later) */}
-      <div className="mt-auto px-4 pt-6 pb-2">
-        <h3 className="text-xs font-medium text-white/50 uppercase tracking-wider">Management</h3>
-      </div>
-      <div className="flex flex-col gap-1 px-4 mb-4">
-        <SidebarItem 
-          icon={FolderKanban} 
-          label="Projects" 
-          path="/projects" 
-          active={location.pathname.startsWith("/projects")}
-        />
-        <SidebarItem 
-          icon={CreditCard} 
-          label="Billing" 
-          path="/billing" 
-          active={location.pathname === "/billing"}
-        />
-        <SidebarItem 
-          icon={Settings} 
-          label="Settings" 
-          path="/settings" 
-          active={location.pathname === "/settings"}
-        />
-      </div>
-    </div>
+        <div className="space-y-1">
+          {navigation.map((item) => (
+            <Link
+              key={item.name}
+              to={item.href}
+              className={cn(
+                location.pathname === item.href
+                  ? "bg-emerald-500/10 text-emerald-400"
+                  : "text-gray-400 hover:text-gray-200 hover:bg-neutral-800/30",
+                "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+              )}
+            >
+              <item.icon
+                className={cn(
+                  location.pathname === item.href
+                    ? "text-emerald-400"
+                    : "text-gray-400 group-hover:text-gray-200",
+                  "h-6 w-6 shrink-0"
+                )}
+                aria-hidden="true"
+              />
+              {item.name}
+            </Link>
+          ))}
+        </div>
+      </nav>
+    </aside>
   );
 };
 
