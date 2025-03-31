@@ -1,6 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -9,20 +19,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useOrgStore } from "@/store/orgStore";
-import { Settings, Trash2, UserPlus, FolderPlus, XCircle, Check, X } from "lucide-react";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useOrgStore } from "@/store/orgStore";
+import { Settings, Trash2, UserPlus, FolderPlus, XCircle, Check, X, Plus } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const statusColors = {
   Active: "bg-emerald-500/10 text-emerald-400",
@@ -33,13 +35,14 @@ const statusColors = {
 type Visibility = "Public" | "Private";
 
 const OrgSettings = () => {
-  const { organizations, selectedOrgId, projects } = useOrgStore();
+  const { organizations, selectedOrgId, projects, setProjects, setSelectedProjectAndOrg } = useOrgStore();
   const selectedOrg = organizations.find(org => org.id === selectedOrgId);
   const [orgName, setOrgName] = useState(selectedOrg?.name || "");
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState("member");
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [defaultProjectVisibility, setDefaultProjectVisibility] = useState<Visibility>(selectedOrg?.defaultProjectVisibility || "Private");
+  const navigate = useNavigate();
 
   const handleDefaultVisibilityChange = (value: string) => {
     setDefaultProjectVisibility(value as Visibility);
@@ -59,6 +62,10 @@ const OrgSettings = () => {
     } else {
       setSelectedMembers(prev => prev.filter(id => id !== memberId));
     }
+  };
+
+  const handleNavigateToProjectSettings = (projectId: string) => {
+    navigate(`/project-settings/${projectId}`);
   };
 
   if (!selectedOrg) return null;
@@ -100,9 +107,9 @@ const OrgSettings = () => {
                         <SelectTrigger className="w-32 bg-black/40 border-neutral-800 text-gray-200">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-black border-neutral-800">
-                          <SelectItem value="Public" className="text-gray-200 focus:bg-emerald-500/10 focus:text-emerald-400">Public</SelectItem>
-                          <SelectItem value="Private" className="text-gray-200 focus:bg-emerald-500/10 focus:text-emerald-400">Private</SelectItem>
+                        <SelectContent className="bg-black border-neutral-800/30">
+                          <SelectItem value="Public" className="text-gray-200 hover:bg-neutral-800/30 focus:bg-neutral-800/30">Public</SelectItem>
+                          <SelectItem value="Private" className="text-gray-200 hover:bg-neutral-800/30 focus:bg-neutral-800/30">Private</SelectItem>
                         </SelectContent>
                       </Select>
                       <p className="text-xs text-gray-400">This will be the default visibility for new projects.</p>
@@ -140,32 +147,28 @@ const OrgSettings = () => {
         <TabsContent value="projects">
           <Card className="p-6 bg-black/20 border-neutral-800/30">
             <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium text-gray-200">Projects</h3>
-                <Button 
-                  variant="outline"
-                  className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20 hover:border-emerald-500/50"
-                >
-                  <FolderPlus className="h-4 w-4 mr-2" />
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold text-gray-200">Projects</h2>
+                <Button className="bg-emerald-500 hover:bg-emerald-600">
+                  <Plus className="mr-2 h-4 w-4" />
                   New Project
                 </Button>
               </div>
 
-              <Card className="border-neutral-800/30 bg-black/20">
+              <Card className="border-neutral-800/30 bg-black">
                 <Table>
                   <TableHeader>
-                    <TableRow className="border-neutral-800/30 hover:bg-transparent">
-                      <TableHead className="text-gray-400">Name</TableHead>
-                      <TableHead className="text-gray-400">Members</TableHead>
-                      <TableHead className="text-gray-400">Visibility</TableHead>
-                      <TableHead className="text-gray-400">Created</TableHead>
-                      <TableHead className="text-right text-gray-400">Actions</TableHead>
+                    <TableRow className="hover:bg-transparent border-neutral-800/30">
+                      <TableHead className="text-sm text-gray-400 font-normal">Project</TableHead>
+                      <TableHead className="text-sm text-gray-400 font-normal">Visibility</TableHead>
+                      <TableHead className="text-sm text-gray-400 font-normal">Tier</TableHead>
+                      <TableHead className="w-[50px]"></TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {projects.map((project) => (
-                      <TableRow key={project.id} className="border-neutral-800/30 hover:bg-black/40">
-                        <TableCell>
+                    {projects.filter(proj => proj.orgId === selectedOrgId).map((project) => (
+                      <TableRow key={project.id} className="hover:bg-neutral-800/30 border-neutral-800/30">
+                        <TableCell className="font-medium text-gray-200">
                           <div className="flex items-center gap-3">
                             <div className="h-8 w-8 rounded-md bg-gray-800/50 flex items-center justify-center">
                               <FolderPlus className="h-4 w-4 text-gray-400" />
@@ -177,35 +180,61 @@ const OrgSettings = () => {
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline" className="bg-gray-800/30 text-gray-200 border-neutral-800/30">
-                            {project.members.length} Members
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Select defaultValue={project.visibility}>
-                            <SelectTrigger className="w-32 bg-black/20 border-neutral-800/30 text-gray-200">
+                          <Select
+                            value={project.visibility}
+                            onValueChange={(value: Visibility) => {
+                              const updatedProjects = projects.map(p => 
+                                p.id === project.id ? { ...p, visibility: value } : p
+                              );
+                              setProjects(updatedProjects);
+                            }}
+                          >
+                            <SelectTrigger className="w-[100px] h-9 bg-black border-neutral-800 text-sm text-gray-200">
                               <SelectValue />
                             </SelectTrigger>
-                            <SelectContent className="bg-black border-neutral-800/30">
-                              <SelectItem value="Public" className="text-gray-200 focus:bg-emerald-500/10 focus:text-emerald-400">Public</SelectItem>
-                              <SelectItem value="Private" className="text-gray-200 focus:bg-emerald-500/10 focus:text-emerald-400">Private</SelectItem>
+                            <SelectContent className="bg-black border-neutral-800">
+                              <SelectItem value="Public" className="text-gray-200 hover:bg-neutral-800/30 focus:bg-neutral-800/30">Public</SelectItem>
+                              <SelectItem value="Private" className="text-gray-200 hover:bg-neutral-800/30 focus:bg-neutral-800/30">Private</SelectItem>
                             </SelectContent>
                           </Select>
                         </TableCell>
-                        <TableCell className="text-gray-400">{project.createdDate}</TableCell>
-                        <TableCell className="text-right">
+                        <TableCell>
+                          <Badge
+                            variant="outline"
+                            className={cn(
+                              "text-sm cursor-pointer",
+                              {
+                                "border-neutral-500 text-neutral-500": project.tier === "Free",
+                                "border-blue-500 text-blue-500": project.tier === "Pro",
+                                "border-purple-500 text-purple-500": project.tier === "Enterprise"
+                              }
+                            )}
+                            onClick={() => {
+                              setSelectedProjectAndOrg(project.id);
+                              navigate(`/billing`);
+                            }}
+                          >
+                            {project.tier}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
                           <div className="flex items-center justify-end gap-2">
                             <Button 
                               variant="ghost" 
                               size="icon"
-                              className="h-8 w-8 hover:bg-emerald-500/10 text-emerald-400"
+                              onClick={() => navigate(`/project-settings/${project.id}`)}
+                              className="h-8 w-8 text-gray-400 hover:text-emerald-400"
                             >
                               <Settings className="h-4 w-4" />
                             </Button>
-                            <Button 
-                              variant="ghost" 
+                            <Button
+                              variant="ghost"
                               size="icon"
-                              className="h-8 w-8 hover:bg-red-500/10 hover:text-red-400"
+                              className="h-8 w-8 text-gray-400 hover:text-red-500"
+                              onClick={() => {
+                                const updatedProjects = projects.filter(p => p.id !== project.id);
+                                setProjects(updatedProjects);
+                              }}
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -223,40 +252,50 @@ const OrgSettings = () => {
         <TabsContent value="members">
           <Card className="p-6 bg-black/20 border-neutral-800/30">
             <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-medium text-gray-200 mb-4">Team Members</h3>
+                <p className="text-sm text-gray-400 mb-6">Manage your organization's team members and their roles.</p>
+              </div>
+
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <Input
-                    value={inviteEmail}
-                    onChange={(e) => setInviteEmail(e.target.value)}
-                    placeholder="Enter email address"
-                    className="bg-black/20 border-neutral-800/30 text-gray-200"
-                  />
-                  <Select defaultValue={inviteRole}>
-                    <SelectTrigger className="w-32 bg-black/20 border-neutral-800/30 text-gray-200">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-black border-neutral-800/30">
-                      <SelectItem value="Owner" className="text-gray-200">Owner</SelectItem>
-                      <SelectItem value="Admin" className="text-gray-200">Admin</SelectItem>
-                      <SelectItem value="Member" className="text-gray-200">Member</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Button className="bg-emerald-500 hover:bg-emerald-600 flex items-center gap-2">
-                    <UserPlus className="w-4 h-4" />
+                <div className="flex items-center space-x-3">
+                  <div className="w-[300px]">
+                    <Input
+                      value={inviteEmail}
+                      onChange={(e) => setInviteEmail(e.target.value)}
+                      placeholder="Enter email address"
+                      className="bg-black/20 border-neutral-800/30 text-gray-200"
+                    />
+                  </div>
+                  <div className="w-[120px]">
+                    <Select defaultValue={inviteRole}>
+                      <SelectTrigger className="bg-black/20 border-neutral-800/30 text-gray-200">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-black border-neutral-800/30">
+                        <SelectItem value="Owner" className="text-gray-200 hover:bg-neutral-800/30 focus:bg-neutral-800/30">Owner</SelectItem>
+                        <SelectItem value="Admin" className="text-gray-200 hover:bg-neutral-800/30 focus:bg-neutral-800/30">Admin</SelectItem>
+                        <SelectItem value="Member" className="text-gray-200 hover:bg-neutral-800/30 focus:bg-neutral-800/30">Member</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button className="bg-emerald-500 hover:bg-emerald-600 text-white">
+                    <UserPlus className="w-4 h-4 mr-2" />
                     Invite Member
                   </Button>
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="text-red-400 hover:text-red-400 hover:bg-red-500/10"
-                  disabled={selectedMembers.length === 0}
-                >
-                  Remove Selected
-                </Button>
+                {selectedMembers.length > 0 && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-red-400 hover:text-red-400 hover:bg-red-500/10"
+                  >
+                    Remove Selected ({selectedMembers.length})
+                  </Button>
+                )}
               </div>
 
-              <div>
+              <Card className="border-neutral-800/30 bg-black/20">
                 <Table>
                   <TableHeader>
                     <TableRow className="hover:bg-transparent border-neutral-800/30">
@@ -266,11 +305,11 @@ const OrgSettings = () => {
                           onCheckedChange={handleSelectAllMembers}
                         />
                       </TableHead>
-                      <TableHead className="text-gray-400">Member</TableHead>
-                      <TableHead className="text-gray-400">Role</TableHead>
-                      <TableHead className="text-gray-400">Status</TableHead>
+                      <TableHead className="text-gray-400 w-[300px]">Member</TableHead>
+                      <TableHead className="text-gray-400 w-[120px]">Role</TableHead>
+                      <TableHead className="text-gray-400 w-[120px]">Status</TableHead>
                       <TableHead className="text-gray-400">Added</TableHead>
-                      <TableHead className="text-gray-400 text-right">Actions</TableHead>
+                      <TableHead className="text-gray-400 text-right w-[100px]">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -288,13 +327,13 @@ const OrgSettings = () => {
                         <TableCell className="font-medium text-gray-200">{member.email}</TableCell>
                         <TableCell>
                           <Select defaultValue={member.role}>
-                            <SelectTrigger className="w-32 bg-black/20 border-neutral-800/30 text-gray-200">
+                            <SelectTrigger className="bg-black/20 border-neutral-800/30 text-gray-200">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent className="bg-black border-neutral-800/30">
-                              <SelectItem value="Owner" className="text-gray-200">Owner</SelectItem>
-                              <SelectItem value="Admin" className="text-gray-200">Admin</SelectItem>
-                              <SelectItem value="Member" className="text-gray-200">Member</SelectItem>
+                              <SelectItem value="Owner" className="text-gray-200 hover:bg-neutral-800/30 focus:bg-neutral-800/30">Owner</SelectItem>
+                              <SelectItem value="Admin" className="text-gray-200 hover:bg-neutral-800/30 focus:bg-neutral-800/30">Admin</SelectItem>
+                              <SelectItem value="Member" className="text-gray-200 hover:bg-neutral-800/30 focus:bg-neutral-800/30">Member</SelectItem>
                             </SelectContent>
                           </Select>
                         </TableCell>
@@ -357,7 +396,7 @@ const OrgSettings = () => {
                     ))}
                   </TableBody>
                 </Table>
-              </div>
+              </Card>
             </div>
           </Card>
         </TabsContent>

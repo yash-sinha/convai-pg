@@ -11,22 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Link, useNavigate } from "react-router-dom";
 import { useOrgStore } from "@/store/orgStore";
-import { ChevronDown, CreditCard, Building2, User, LogOut } from "lucide-react";
-
-const planColors = {
-  Free: "bg-gray-500",
-  Indie: "bg-emerald-500",
-  Scale: "bg-purple-500",
-  Enterprise: "bg-blue-500"
-} as const;
-
-type Plan = keyof typeof planColors;
-
-const getProjectPlan = (projectId: string): Plan => {
-  // This would normally come from a subscription store
-  const plans: Plan[] = ["Free", "Indie", "Scale", "Enterprise"];
-  return plans[Math.floor(Math.random() * plans.length)]; // Mock data
-};
+import { ChevronDown, Building2, User, LogOut } from "lucide-react";
 
 const NavBar = () => {
   const {
@@ -81,13 +66,13 @@ const NavBar = () => {
               <ChevronDown className="h-4 w-4 text-gray-400" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 bg-gray-900/90 backdrop-blur-sm border-neutral-800/30">
+          <DropdownMenuContent align="end" className="w-56 bg-gray-900/90 backdrop-blur-sm border-neutral-800/30 rounded-lg">
             {organizations.map((org) => (
               <DropdownMenuItem
                 key={org.id}
                 onClick={() => setSelectedOrg(org.id)}
                 className={cn(
-                  "flex items-center space-x-2 text-gray-200",
+                  "flex items-center space-x-2 text-gray-200 rounded-md mx-1 my-0.5",
                   selectedOrgId === org.id && "bg-emerald-500/10 text-emerald-400"
                 )}
               >
@@ -107,30 +92,57 @@ const NavBar = () => {
               disabled={!selectedOrgId}
             >
               {selectedProject ? (
-                <>
-                  <Badge className={cn("h-2 w-2 rounded-full", planColors[getProjectPlan(selectedProject.id)])} />
-                  <span className="text-sm text-gray-200 ml-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-200">
                     {selectedProject.name}
                   </span>
-                </>
+                  <Badge
+                    variant="outline"
+                    className={cn(
+                      "text-xs",
+                      {
+                        "border-neutral-500 text-neutral-500": selectedProject.tier === "Free",
+                        "border-blue-500 text-blue-500": selectedProject.tier === "Pro",
+                        "border-purple-500 text-purple-500": selectedProject.tier === "Enterprise"
+                      }
+                    )}
+                  >
+                    {selectedProject.tier}
+                  </Badge>
+                  <ChevronDown className="h-4 w-4 text-gray-400" />
+                </div>
               ) : (
-                <span className="text-sm text-gray-200">Select Project</span>
+                <>
+                  <span className="text-sm text-gray-400">Select Project</span>
+                  <ChevronDown className="h-4 w-4 text-gray-400" />
+                </>
               )}
-              <ChevronDown className="h-4 w-4 text-gray-400" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 bg-gray-900/90 backdrop-blur-sm border-neutral-800/30">
+          <DropdownMenuContent align="end" className="w-72 bg-gray-900/90 backdrop-blur-sm border-neutral-800/30 rounded-lg">
             {filteredProjects.map((project) => (
               <DropdownMenuItem
                 key={project.id}
                 onClick={() => setSelectedProject(project.id)}
                 className={cn(
-                  "flex items-center space-x-2 text-gray-200",
+                  "flex items-center justify-between text-gray-200 rounded-md mx-1 my-0.5",
                   selectedProjectId === project.id && "bg-emerald-500/10 text-emerald-400"
                 )}
               >
-                <Badge className={cn("h-2 w-2 rounded-full", planColors[getProjectPlan(project.id)])} />
                 <span>{project.name}</span>
+                <Badge
+                  variant="outline"
+                  className={cn(
+                    "text-xs",
+                    {
+                      "border-neutral-500 text-neutral-500": project.tier === "Free",
+                      "border-blue-500 text-blue-500": project.tier === "Pro",
+                      "border-purple-500 text-purple-500": project.tier === "Enterprise"
+                    }
+                  )}
+                >
+                  {project.tier}
+                </Badge>
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
@@ -150,7 +162,7 @@ const NavBar = () => {
               />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 bg-black border-neutral-800/30">
+          <DropdownMenuContent align="end" className="w-56 bg-black border-neutral-800/30 rounded-lg">
             <DropdownMenuLabel className="text-gray-400">
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none text-gray-200">John Doe</p>
@@ -159,13 +171,13 @@ const NavBar = () => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator className="bg-neutral-800/30" />
             <DropdownMenuItem 
-              className="text-gray-200 focus:bg-emerald-500/10 focus:text-emerald-400"
+              className="text-gray-200 rounded-md mx-1 my-0.5 focus:bg-emerald-500/10 focus:text-emerald-400"
               onClick={() => navigate("/org-settings")}
             >
               <Building2 className="mr-2 h-4 w-4" />
               <span>Manage Organizations</span>
             </DropdownMenuItem>
-            <DropdownMenuItem className="text-red-400 focus:bg-red-500/10 focus:text-red-400">
+            <DropdownMenuItem className="text-red-400 rounded-md mx-1 my-0.5 focus:bg-red-500/10 focus:text-red-400">
               <LogOut className="mr-2 h-4 w-4" />
               <span>Log out</span>
             </DropdownMenuItem>

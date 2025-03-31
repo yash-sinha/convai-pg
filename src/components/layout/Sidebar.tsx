@@ -10,6 +10,7 @@ import {
   Users,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useOrgStore } from "@/store/orgStore";
 
 const navigation = [
   {
@@ -44,13 +45,14 @@ const navigation = [
   },
   {
     name: "Manage Project",
-    href: "/project-settings",
+    href: null, // We'll compute this dynamically
     icon: Settings,
   },
 ];
 
 const Sidebar = () => {
   const location = useLocation();
+  const { selectedProjectId } = useOrgStore();
 
   return (
     <aside className="fixed inset-y-0 z-50 flex w-60 flex-col bg-black">
@@ -70,29 +72,35 @@ const Sidebar = () => {
         </div>
 
         <div className="space-y-1">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              to={item.href}
-              className={cn(
-                location.pathname === item.href
-                  ? "bg-emerald-500/10 text-emerald-400"
-                  : "text-gray-400 hover:text-gray-200 hover:bg-neutral-800/30",
-                "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-              )}
-            >
-              <item.icon
+          {navigation.map((item) => {
+            const href = item.href === null ? `/project-settings/${selectedProjectId}` : item.href;
+            const isActive = location.pathname === href || 
+              (item.name === "Manage Project" && location.pathname.startsWith("/project-settings"));
+            
+            return (
+              <Link
+                key={item.name}
+                to={href}
                 className={cn(
-                  location.pathname === item.href
-                    ? "text-emerald-400"
-                    : "text-gray-400 group-hover:text-gray-200",
-                  "h-6 w-6 shrink-0"
+                  isActive
+                    ? "bg-emerald-500/10 text-emerald-400"
+                    : "text-gray-400 hover:text-gray-200 hover:bg-neutral-800/30",
+                  "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                 )}
-                aria-hidden="true"
-              />
-              {item.name}
-            </Link>
-          ))}
+              >
+                <item.icon
+                  className={cn(
+                    isActive
+                      ? "text-emerald-400"
+                      : "text-gray-400 group-hover:text-gray-200",
+                    "h-6 w-6 shrink-0"
+                  )}
+                  aria-hidden="true"
+                />
+                {item.name}
+              </Link>
+            );
+          })}
         </div>
       </nav>
     </aside>

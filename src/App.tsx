@@ -37,7 +37,7 @@ function App() {
                 <Route path="/billing" element={<Billing />} />
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/org-settings" element={<OrgSettings />} />
-                <Route path="/project-settings" element={<ProjectSettings />} />
+                <Route path="/project-settings/:projectId" element={<ProjectSettings />} />
                 <Route path="/knowledge-bank" element={<KnowledgeBank />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

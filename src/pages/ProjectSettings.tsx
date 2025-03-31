@@ -21,18 +21,36 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useOrgStore, Visibility } from "@/store/orgStore";
 import { Pencil, Trash2, UserPlus, Settings, XCircle, Check, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { useParams, useNavigate } from "react-router-dom";
 
 const ProjectSettings = () => {
-  const { organizations, projects, selectedOrgId, selectedProjectId } = useOrgStore();
+  const { projectId } = useParams();
+  const { organizations, projects, selectedOrgId, selectedProjectId, setSelectedProject } = useOrgStore();
   const selectedOrg = organizations.find(org => org.id === selectedOrgId);
-  const selectedProject = projects.find(p => p.id === selectedProjectId);
+  const selectedProject = projects.find(p => p.id === (projectId || selectedProjectId));
   const [projectName, setProjectName] = useState(selectedProject?.name || "");
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [visibility, setVisibility] = useState<Visibility>(selectedProject?.visibility || "Private");
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState("Member");
+  const navigate = useNavigate();
+
+  // Redirect to the project URL if coming from navbar
+  useEffect(() => {
+    if (!projectId && selectedProjectId) {
+      navigate(`/project-settings/${selectedProjectId}`, { replace: true });
+    }
+  }, [projectId, selectedProjectId, navigate]);
+
+  // Update selected project in store if projectId changes
+  useEffect(() => {
+    const targetProjectId = projectId || selectedProjectId;
+    if (targetProjectId) {
+      setSelectedProject(targetProjectId);
+    }
+  }, [projectId, selectedProjectId, setSelectedProject]);
 
   const handleSelectAllMembers = (checked: boolean) => {
     if (checked) {
@@ -185,37 +203,47 @@ const ProjectSettings = () => {
         <TabsContent value="members">
           <Card className="p-6 bg-black/20 border-neutral-800/30">
             <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-medium text-gray-200 mb-4">Project Members</h3>
+                <p className="text-sm text-gray-400 mb-6">Manage access and roles for members in this project.</p>
+              </div>
+
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <Input
-                    value={inviteEmail}
-                    onChange={(e) => setInviteEmail(e.target.value)}
-                    placeholder="Enter email address"
-                    className="bg-black/20 border-neutral-800/30 text-gray-200"
-                  />
-                  <Select defaultValue={inviteRole}>
-                    <SelectTrigger className="w-32 bg-black/20 border-neutral-800/30 text-gray-200">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-black border-neutral-800/30">
-                      <SelectItem value="Owner" className="text-gray-200">Owner</SelectItem>
-                      <SelectItem value="Admin" className="text-gray-200">Admin</SelectItem>
-                      <SelectItem value="Member" className="text-gray-200">Member</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Button className="bg-emerald-500 hover:bg-emerald-600 flex items-center gap-2">
-                    <UserPlus className="w-4 h-4" />
+                <div className="flex items-center space-x-3">
+                  <div className="w-[300px]">
+                    <Input
+                      value={inviteEmail}
+                      onChange={(e) => setInviteEmail(e.target.value)}
+                      placeholder="Enter email address"
+                      className="bg-black/20 border-neutral-800/30 text-gray-200"
+                    />
+                  </div>
+                  <div className="w-[120px]">
+                    <Select defaultValue={inviteRole}>
+                      <SelectTrigger className="bg-black/20 border-neutral-800/30 text-gray-200">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-black border-neutral-800/30">
+                        <SelectItem value="Owner" className="text-gray-200">Owner</SelectItem>
+                        <SelectItem value="Admin" className="text-gray-200">Admin</SelectItem>
+                        <SelectItem value="Member" className="text-gray-200">Member</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button className="bg-emerald-500 hover:bg-emerald-600 text-white">
+                    <UserPlus className="w-4 h-4 mr-2" />
                     Invite Member
                   </Button>
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="text-red-400 hover:text-red-400 hover:bg-red-500/10"
-                  disabled={selectedMembers.length === 0}
-                >
-                  Remove Selected
-                </Button>
+                {selectedMembers.length > 0 && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-red-400 hover:text-red-400 hover:bg-red-500/10"
+                  >
+                    Remove Selected ({selectedMembers.length})
+                  </Button>
+                )}
               </div>
 
               <div>
