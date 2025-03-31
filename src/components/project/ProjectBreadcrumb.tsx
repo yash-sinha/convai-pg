@@ -19,12 +19,14 @@ const ProjectBreadcrumb = ({ organizationName, projectName }: ProjectBreadcrumbP
     <Breadcrumb className="mb-6">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink as={Link} to="/organizations">Organizations</BreadcrumbLink>
+          <BreadcrumbLink asChild>
+            <Link to="/organizations">Organizations</Link>
+          </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink as={Link} to="/organizations">
-            {organizationName}
+          <BreadcrumbLink asChild>
+            <Link to="/organizations">{organizationName}</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
