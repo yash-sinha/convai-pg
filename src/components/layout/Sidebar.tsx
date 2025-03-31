@@ -8,6 +8,8 @@ import {
   Settings,
   Sparkles,
   Users,
+  Key,
+  UserSquare2,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useOrgStore } from "@/store/orgStore";
@@ -22,6 +24,11 @@ const navigation = [
     name: "Characters",
     href: "/characters",
     icon: Users,
+  },
+  {
+    name: "Templates",
+    href: "/templates",
+    icon: UserSquare2,
   },
   {
     name: "Experiences",
@@ -42,6 +49,11 @@ const navigation = [
     name: "Knowledge Bank",
     href: "/knowledge-bank",
     icon: FileText,
+  },
+  {
+    name: "API Keys",
+    href: "/api-keys",
+    icon: Key,
   },
   {
     name: "Manage Project",

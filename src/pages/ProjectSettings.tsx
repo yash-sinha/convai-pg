@@ -19,8 +19,12 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useOrgStore, Visibility } from "@/store/orgStore";
 import { Pencil, Trash2, UserPlus, Settings, XCircle, Check, X } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useParams, useNavigate } from "react-router-dom";
@@ -35,6 +39,10 @@ const ProjectSettings = () => {
   const [visibility, setVisibility] = useState<Visibility>(selectedProject?.visibility || "Private");
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState("Member");
+  const [characterVersions, setCharacterVersions] = useState({
+    "1": { current: "1.0", versions: ["1.0", "0.9", "0.8"], isLive: false, visibility: "Public" },
+    "2": { current: "2.1", versions: ["2.1", "2.0", "1.9"], isLive: true, visibility: "Private" }
+  });
   const navigate = useNavigate();
 
   // Redirect to the project URL if coming from navbar
@@ -160,21 +168,179 @@ const ProjectSettings = () => {
               <TableHeader>
                 <TableRow className="border-neutral-800/30 hover:bg-transparent">
                   <TableHead className="text-gray-400">Character</TableHead>
-                  <TableHead className="text-gray-400">Type</TableHead>
+                  <TableHead className="text-gray-400">Visibility</TableHead>
                   <TableHead className="text-gray-400">Created</TableHead>
+                  <TableHead className="text-gray-400">Live Version</TableHead>
                   <TableHead className="text-gray-400">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 <TableRow className="border-neutral-800/30 hover:bg-black/40">
                   <TableCell>
-                    <div className="font-medium text-gray-200">Main Character</div>
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" />
+                        <AvatarFallback>MC</AvatarFallback>
+                      </Avatar>
+                      <div className="font-medium text-gray-200">Main Character</div>
+                    </div>
                   </TableCell>
-                  <TableCell className="text-gray-400">
-                    Protagonist
+                  <TableCell>
+                    <Select
+                      defaultValue={characterVersions["1"].visibility}
+                      onValueChange={(value: Visibility) => {
+                        setCharacterVersions(prev => ({
+                          ...prev,
+                          "1": { ...prev["1"], visibility: value }
+                        }));
+                      }}
+                    >
+                      <SelectTrigger className="w-[100px] h-9 bg-black border-neutral-800 text-sm text-gray-200">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-black border-neutral-800">
+                        <SelectItem value="Public" className="text-gray-200 hover:bg-neutral-800/30 focus:bg-neutral-800/30">Public</SelectItem>
+                        <SelectItem value="Private" className="text-gray-200 hover:bg-neutral-800/30 focus:bg-neutral-800/30">Private</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </TableCell>
                   <TableCell className="text-gray-400">
                     Mar 15, 2024
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Switch 
+                        checked={characterVersions["1"].isLive}
+                        className="data-[state=checked]:bg-emerald-500" 
+                        onCheckedChange={(checked) => {
+                          setCharacterVersions(prev => ({
+                            ...prev,
+                            "1": { ...prev["1"], isLive: checked }
+                          }));
+                        }}
+                      />
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            className="h-6 px-2 text-sm text-gray-400 hover:text-emerald-400 flex items-center gap-1"
+                          >
+                            v{characterVersions["1"].current}
+                            <ChevronDown className="h-3 w-3" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-32 bg-black border-neutral-800">
+                          {characterVersions["1"].versions.map((version) => (
+                            <DropdownMenuItem 
+                              key={version}
+                              onClick={() => {
+                                setCharacterVersions(prev => ({
+                                  ...prev,
+                                  "1": { ...prev["1"], current: version }
+                                }));
+                              }}
+                              className="text-gray-200 focus:text-emerald-400 focus:bg-emerald-500/10"
+                            >
+                              v{version}
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <Button 
+                        variant="ghost" 
+                        size="icon"
+                        className="h-8 w-8 hover:bg-emerald-500/10 text-emerald-400"
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="icon"
+                        className="h-8 w-8 hover:bg-red-500/10 text-red-400"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+                <TableRow className="border-neutral-800/30 hover:bg-black/40">
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src="https://api.dicebear.com/7.x/adventurer/svg?seed=Sarah" />
+                        <AvatarFallback>SA</AvatarFallback>
+                      </Avatar>
+                      <div className="font-medium text-gray-200">Support Agent</div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Select
+                      defaultValue={characterVersions["2"].visibility}
+                      onValueChange={(value: Visibility) => {
+                        setCharacterVersions(prev => ({
+                          ...prev,
+                          "2": { ...prev["2"], visibility: value }
+                        }));
+                      }}
+                    >
+                      <SelectTrigger className="w-[100px] h-9 bg-black border-neutral-800 text-sm text-gray-200">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-black border-neutral-800">
+                        <SelectItem value="Public" className="text-gray-200 hover:bg-neutral-800/30 focus:bg-neutral-800/30">Public</SelectItem>
+                        <SelectItem value="Private" className="text-gray-200 hover:bg-neutral-800/30 focus:bg-neutral-800/30">Private</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
+                  <TableCell className="text-gray-400">
+                    Mar 20, 2024
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Switch 
+                        checked={characterVersions["2"].isLive}
+                        className="data-[state=checked]:bg-emerald-500" 
+                        onCheckedChange={(checked) => {
+                          setCharacterVersions(prev => ({
+                            ...prev,
+                            "2": { ...prev["2"], isLive: checked }
+                          }));
+                        }}
+                      />
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            className="h-6 px-2 text-sm text-gray-400 hover:text-emerald-400 flex items-center gap-1"
+                          >
+                            v{characterVersions["2"].current}
+                            <ChevronDown className="h-3 w-3" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-32 bg-black border-neutral-800">
+                          {characterVersions["2"].versions.map((version) => (
+                            <DropdownMenuItem 
+                              key={version}
+                              onClick={() => {
+                                setCharacterVersions(prev => ({
+                                  ...prev,
+                                  "2": { ...prev["2"], current: version }
+                                }));
+                              }}
+                              className="text-gray-200 focus:text-emerald-400 focus:bg-emerald-500/10"
+                            >
+                              v{version}
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-2">

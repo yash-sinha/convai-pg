@@ -16,6 +16,8 @@ import ProjectSettings from "./pages/ProjectSettings";
 import KnowledgeBank from "./pages/KnowledgeBank";
 import Sidebar from "./components/layout/Sidebar";
 import NavBar from "./components/layout/NavBar";
+import Templates from "./pages/Templates";
+import ApiKeys from "./pages/ApiKeys";
 
 const queryClient = new QueryClient();
 
@@ -33,12 +35,14 @@ function App() {
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/characters" element={<Characters />} />
+                <Route path="/templates" element={<Templates />} />
                 <Route path="/experiences" element={<Experiences />} />
                 <Route path="/billing" element={<Billing />} />
                 <Route path="/analytics" element={<Analytics />} />
-                <Route path="/org-settings" element={<OrgSettings />} />
-                <Route path="/project-settings/:projectId" element={<ProjectSettings />} />
                 <Route path="/knowledge-bank" element={<KnowledgeBank />} />
+                <Route path="/api-keys" element={<ApiKeys />} />
+                <Route path="/project-settings/:projectId" element={<ProjectSettings />} />
+                <Route path="/org-settings" element={<OrgSettings />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
