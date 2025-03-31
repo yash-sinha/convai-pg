@@ -8,6 +8,7 @@ import MainLayout from "./components/layout/MainLayout";
 import Index from "./pages/Index";
 import Organizations from "./pages/Organizations";
 import Projects from "./pages/Projects";
+import ProjectManagement from "./pages/ProjectManagement";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/organizations" element={<Organizations />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/:projectId" element={<ProjectManagement />} />
             {/* Add placeholder routes for the other sidebar items */}
             <Route path="/billing" element={<div className="p-6">Billing Page Content</div>} />
             <Route path="/settings" element={<div className="p-6">Settings Page Content</div>} />
