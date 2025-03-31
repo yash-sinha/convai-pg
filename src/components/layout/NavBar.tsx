@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Link, useNavigate } from "react-router-dom";
 import { useOrgStore } from "@/store/orgStore";
-import { ChevronDown, Building2, User, LogOut } from "lucide-react";
+import { ChevronDown, Building2, User, LogOut, Folder } from "lucide-react";
 
 const NavBar = () => {
   const {
@@ -93,6 +93,9 @@ const NavBar = () => {
             >
               {selectedProject ? (
                 <div className="flex items-center gap-2">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-md bg-emerald-500/20">
+                    <Folder className="h-4 w-4 text-emerald-400" />
+                  </div>
                   <span className="text-sm text-gray-200">
                     {selectedProject.name}
                   </span>
@@ -109,13 +112,16 @@ const NavBar = () => {
                   >
                     {selectedProject.tier}
                   </Badge>
-                  <ChevronDown className="h-4 w-4 text-gray-400" />
+                  <ChevronDown className="h-4 w-4 text-gray-200" />
                 </div>
               ) : (
-                <>
+                <div className="flex items-center gap-2">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-md bg-emerald-500/20">
+                    <Folder className="h-4 w-4 text-emerald-400" />
+                  </div>
                   <span className="text-sm text-gray-400">Select Project</span>
                   <ChevronDown className="h-4 w-4 text-gray-400" />
-                </>
+                </div>
               )}
             </Button>
           </DropdownMenuTrigger>

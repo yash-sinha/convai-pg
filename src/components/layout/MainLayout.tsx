@@ -1,8 +1,13 @@
 import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
 import NavBar from "./NavBar";
 import Sidebar from "./Sidebar";
 
 const MainLayout = () => {
+  useEffect(() => {
+    document.title = "Convai";
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col bg-[#0B1120]">
       <div className="flex flex-1">
