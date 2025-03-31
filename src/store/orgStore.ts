@@ -50,6 +50,7 @@ interface OrgStore {
   setSelectedProject: (projectId: string) => void;
   setSelectedProjectAndOrg: (projectId: string) => void;
   setProjects: (projects: Project[]) => void;
+  moveProject: (projectId: string, newOrgId: string) => void;
 }
 
 const mockDocuments: Document[] = [
@@ -217,4 +218,22 @@ export const useOrgStore = create<OrgStore>((set) => ({
     };
   }),
   setProjects: (projects) => set({ projects }),
+  moveProject: (projectId, newOrgId) => set((state) => {
+    const project = state.projects.find(p => p.id === projectId);
+    if (!project) return state;
+
+    // Update project's orgId
+    const updatedProject = { ...project, orgId: newOrgId };
+    
+    // Update projects list
+    const updatedProjects = state.projects.map(p => 
+      p.id === projectId ? updatedProject : p
+    );
+
+    return {
+      projects: updatedProjects,
+      selectedOrgId: newOrgId,
+      selectedProjectId: projectId,
+    };
+  }),
 }));

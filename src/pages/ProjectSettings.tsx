@@ -28,10 +28,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useParams, useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 const ProjectSettings = () => {
   const { projectId } = useParams();
-  const { organizations, projects, selectedOrgId, selectedProjectId, setSelectedProject } = useOrgStore();
+  const { organizations, projects, selectedOrgId, selectedProjectId, setSelectedProject, moveProject } = useOrgStore();
   const selectedOrg = organizations.find(org => org.id === selectedOrgId);
   const selectedProject = projects.find(p => p.id === (projectId || selectedProjectId));
   const [projectName, setProjectName] = useState(selectedProject?.name || "");
@@ -43,6 +44,7 @@ const ProjectSettings = () => {
     "1": { current: "1.0", versions: ["1.0", "0.9", "0.8"], isLive: false, visibility: "Public" },
     "2": { current: "2.1", versions: ["2.1", "2.0", "1.9"], isLive: true, visibility: "Private" }
   });
+  const [targetOrgId, setTargetOrgId] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // Redirect to the project URL if coming from navbar
@@ -136,6 +138,57 @@ const ProjectSettings = () => {
                       <Button className="bg-emerald-500 hover:bg-emerald-600">
                         Save Changes
                       </Button>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-medium text-gray-200 mb-4">Project Actions</h3>
+                <Card className="p-6 border-neutral-800/30 bg-emerald-950/20">
+                  <div className="space-y-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-200">Move to Organization</label>
+                      <div className="flex items-center gap-3">
+                        <Select
+                          value={targetOrgId || selectedOrg?.id}
+                          onValueChange={(value) => {
+                            setTargetOrgId(value);
+                          }}
+                        >
+                          <SelectTrigger className="w-[200px] bg-black/40 border-neutral-800 text-gray-200">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-black border-neutral-800">
+                            {organizations.map((org) => (
+                              <SelectItem 
+                                key={org.id}
+                                value={org.id}
+                                className="text-gray-200 focus:bg-emerald-500/10 focus:text-emerald-400"
+                                disabled={org.id === selectedOrg?.id}
+                              >
+                                {org.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Button 
+                          className="bg-emerald-500 hover:bg-emerald-600 flex items-center gap-2"
+                          disabled={!targetOrgId || targetOrgId === selectedOrg?.id}
+                          onClick={() => {
+                            if (targetOrgId && projectId) {
+                              moveProject(projectId, targetOrgId);
+                              setTargetOrgId(null);
+                              // Navigate to project settings in new org
+                              navigate(`/project-settings/${projectId}`);
+                            }
+                          }}
+                        >
+                          <ArrowRight className="h-4 w-4" />
+                          Move Project
+                        </Button>
+                      </div>
+                      <p className="text-xs text-gray-400">Move this project to a different organization. This action cannot be undone.</p>
                     </div>
                   </div>
                 </Card>
