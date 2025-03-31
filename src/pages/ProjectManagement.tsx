@@ -5,6 +5,8 @@ import ProjectBreadcrumb from "@/components/project/ProjectBreadcrumb";
 import CharacterCard from "@/components/character/CharacterCard";
 import AccessRequest from "@/components/project/AccessRequest";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
 
 // Mock data for the project - would normally come from an API
 const getProjectData = (projectId: string) => {
@@ -78,44 +80,55 @@ const ProjectManagement = () => {
 
   return (
     <div>
-      <ProjectBreadcrumb 
-        organizationName={project.organizationName} 
-        projectName={project.name}
-      />
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <ProjectBreadcrumb 
+            organizationName={project.organizationName} 
+            projectName={project.name}
+          />
+          <h1 className="text-3xl font-bold mt-2 text-green-800">{project.name}</h1>
+        </div>
+        <Button className="bg-green-700 hover:bg-green-800">
+          <PlusCircle className="mr-2 h-4 w-4" /> Create Character
+        </Button>
+      </div>
       
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Project: {project.name}</CardTitle>
-          <CardDescription>Billing: {project.billingPlan}</CardDescription>
+      <Card className="mb-6 border-green-100 bg-green-50/30">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-xl text-green-800">Project Overview</CardTitle>
+          <CardDescription className="text-green-700">Billing Plan: {project.billingPlan}</CardDescription>
         </CardHeader>
       </Card>
       
-      <Tabs defaultValue="overview">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="characters">Characters</TabsTrigger>
-          <TabsTrigger value="billing">Billing</TabsTrigger>
-          <TabsTrigger value="access">Access Requests</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+      <Tabs defaultValue="overview" className="mt-2">
+        <TabsList className="bg-green-100/50 p-0.5">
+          <TabsTrigger value="overview" className="data-[state=active]:bg-white data-[state=active]:text-green-800">Overview</TabsTrigger>
+          <TabsTrigger value="characters" className="data-[state=active]:bg-white data-[state=active]:text-green-800">Characters</TabsTrigger>
+          <TabsTrigger value="billing" className="data-[state=active]:bg-white data-[state=active]:text-green-800">Billing</TabsTrigger>
+          <TabsTrigger value="access" className="data-[state=active]:bg-white data-[state=active]:text-green-800">Access Requests</TabsTrigger>
+          <TabsTrigger value="settings" className="data-[state=active]:bg-white data-[state=active]:text-green-800">Settings</TabsTrigger>
         </TabsList>
         
         <TabsContent value="overview" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Project Overview</CardTitle>
+          <Card className="border-green-100">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-xl text-green-800">Project Details</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>Project Name: {project.name}</p>
-              <p>Organization: {project.organizationName}</p>
-              <p>Billing Plan: {project.billingPlan}</p>
-              <p>Total Characters: {project.characters.length}</p>
-              <p>Pending Access Requests: {project.accessRequests.length}</p>
+              <div className="space-y-2">
+                <p><span className="font-medium">Project Name:</span> {project.name}</p>
+                <p><span className="font-medium">Organization:</span> {project.organizationName}</p>
+                <p><span className="font-medium">Billing Plan:</span> {project.billingPlan}</p>
+                <p><span className="font-medium">Total Characters:</span> {project.characters.length}</p>
+                <p><span className="font-medium">Pending Access Requests:</span> {project.accessRequests.length}</p>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
         
         <TabsContent value="characters" className="mt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <h2 className="text-xl font-semibold mb-4 text-green-800">Project Characters</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {project.characters.map((character) => (
               <CharacterCard 
                 key={character.name} 
@@ -127,19 +140,22 @@ const ProjectManagement = () => {
         </TabsContent>
         
         <TabsContent value="billing" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Billing Information</CardTitle>
+          <Card className="border-green-100">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-xl text-green-800">Billing Information</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>Current Plan: {project.billingPlan}</p>
-              <p>Billing Cycle: Monthly</p>
-              <p>Next Invoice: June 1, 2023</p>
+              <div className="space-y-2">
+                <p><span className="font-medium">Current Plan:</span> {project.billingPlan}</p>
+                <p><span className="font-medium">Billing Cycle:</span> Monthly</p>
+                <p><span className="font-medium">Next Invoice:</span> June 1, 2023</p>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
         
         <TabsContent value="access" className="mt-6">
+          <h2 className="text-xl font-semibold mb-4 text-green-800">Pending Access Requests</h2>
           <div className="space-y-4">
             {project.accessRequests.length > 0 ? (
               project.accessRequests.map((request, index) => (
@@ -150,21 +166,23 @@ const ProjectManagement = () => {
                 />
               ))
             ) : (
-              <p>No pending access requests.</p>
+              <p className="text-gray-600">No pending access requests.</p>
             )}
           </div>
         </TabsContent>
         
         <TabsContent value="settings" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Project Settings</CardTitle>
+          <Card className="border-green-100">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-xl text-green-800">Project Settings</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>Project Name: {project.name}</p>
-              <p>Project ID: {projectId}</p>
-              <p>Created: January 15, 2023</p>
-              <p>Last Modified: May 20, 2023</p>
+              <div className="space-y-2">
+                <p><span className="font-medium">Project Name:</span> {project.name}</p>
+                <p><span className="font-medium">Project ID:</span> {projectId}</p>
+                <p><span className="font-medium">Created:</span> January 15, 2023</p>
+                <p><span className="font-medium">Last Modified:</span> May 20, 2023</p>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
