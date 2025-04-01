@@ -8,13 +8,13 @@ import { ExternalLink } from "lucide-react";
 
 interface CreateProjectModalProps {
   open: boolean;
-  onClose: () => void;
-  onSubmit: (data: { name: string; tier: string }) => void;
+  onOpenChange: (open: boolean) => void;
+  onSubmit: ({ name, tier }: { name: string; tier: string }) => void;
 }
 
 export function CreateProjectModal({
   open,
-  onClose,
+  onOpenChange,
   onSubmit,
 }: CreateProjectModalProps) {
   const [name, setName] = useState("");
@@ -37,12 +37,12 @@ export function CreateProjectModal({
       onSubmit({ name: name.trim(), tier: selectedCredit });
       setName("");
       setSelectedCredit("");
-      onClose();
+      onOpenChange(false);
     }
   };
 
   return (
-    <Modal open={open} onClose={onClose} className="sm:max-w-[600px]">
+    <Modal open={open} onOpenChange={onOpenChange} className="sm:max-w-[600px]">
       <h1 className="text-4xl font-semibold text-gray-200 mb-6">
         Create a project
       </h1>
@@ -105,7 +105,7 @@ export function CreateProjectModal({
             type="button" 
             variant="ghost"
             className="text-lg font-normal hover:bg-neutral-800"
-            onClick={onClose}
+            onClick={() => onOpenChange(false)}
           >
             Cancel
           </Button>

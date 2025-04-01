@@ -4,17 +4,17 @@ import { cn } from '@/lib/utils';
 
 interface ModalProps {
   open: boolean;
-  onClose: () => void;
+  onOpenChange: (open: boolean) => void;
   children: React.ReactNode;
   className?: string;
 }
 
-export function Modal({ open, onClose, children, className }: ModalProps) {
+export function Modal({ open, onOpenChange, children, className }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') onOpenChange(false);
     };
 
     if (open) {
@@ -26,11 +26,11 @@ export function Modal({ open, onClose, children, className }: ModalProps) {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = 'unset';
     };
-  }, [open, onClose]);
+  }, [open, onOpenChange]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-      onClose();
+      onOpenChange(false);
     }
   };
 

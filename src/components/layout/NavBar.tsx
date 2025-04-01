@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Link, useNavigate } from "react-router-dom";
 import { useOrgStore } from "@/store/orgStore";
-import { Project } from "@/types/project";
+import { Project, ProjectTier } from "@/types/project";
 import { ChevronDown, Building2, User, LogOut, Folder, Plus, Trash2, Settings } from "lucide-react";
 import { useState } from "react";
 import { CreateOrgDialog } from "@/components/dialogs/CreateOrgDialog";
@@ -65,7 +65,7 @@ const NavBar = () => {
 
   return (
     <>
-      <div className="w-full border-b border-neutral-900/20 bg-black">
+      <nav className="fixed top-0 left-[240px] right-0 z-50 h-16 border-b bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60 border-neutral-800/50">
         <div className="flex h-14 items-center justify-between px-4 gap-4">
           {/* Navigation Links */}
           <nav className="flex items-center space-x-4">
@@ -280,7 +280,7 @@ const NavBar = () => {
             </DropdownMenu>
           </div>
         </div>
-      </div>
+      </nav>
       <CreateOrgDialog
         open={createOrgOpen}
         onOpenChange={setCreateOrgOpen}

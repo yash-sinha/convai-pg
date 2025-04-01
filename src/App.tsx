@@ -32,21 +32,23 @@ function App() {
             <Sidebar />
             <div className="flex-1 pl-[240px]">
               <NavBar />
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/characters" element={<Characters />} />
-                <Route path="/templates" element={<Templates />} />
-                <Route path="/experiences" element={<Experiences />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/knowledge-bank" element={<KnowledgeBank />} />
-                <Route path="/api-keys" element={<ApiKeys />} />
-                <Route path="/project-settings/:projectId" element={<ProjectSettings />} />
-                <Route path="/billing/:projectId" element={<Billing />} />
-                <Route path="/billing" element={<Billing />} />
-                <Route path="/org-settings/:orgId" element={<OrgSettings />} />
-                <Route path="/org-settings" element={<OrgSettings />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <main className="pt-16">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/characters" element={<Characters />} />
+                  <Route path="/templates" element={<Templates />} />
+                  <Route path="/experiences" element={<Experiences />} />
+                  <Route path="/analytics" element={<Analytics />} />
+                  <Route path="/knowledge-bank" element={<KnowledgeBank />} />
+                  <Route path="/api-keys" element={<ApiKeys />} />
+                  <Route path="/project-settings/:projectId" element={<ProjectSettings />} />
+                  <Route path="/billing/:projectId" element={<Billing />} />
+                  <Route path="/billing" element={<Billing />} />
+                  <Route path="/org-settings/:orgId" element={<OrgSettings />} />
+                  <Route path="/org-settings" element={<OrgSettings />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
             </div>
           </div>
         </Router>

@@ -51,7 +51,7 @@ const Index = () => {
   ];
 
   return (
-    <div className="max-w-[1600px] mx-auto p-8 bg-gray-950 min-h-screen">
+    <div className="min-h-screen bg-black p-8">
       {/* Recent Characters Section */}
       <section>
         <div className="flex justify-between items-center mb-6">

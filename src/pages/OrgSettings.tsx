@@ -535,7 +535,7 @@ const OrgSettings = () => {
         </Tabs>
         <CreateProjectModal 
           open={createProjectOpen}
-          onClose={() => setCreateProjectOpen(false)}
+          onOpenChange={setCreateProjectOpen}
           onSubmit={handleCreateProject}
         />
         <InviteMembersModal

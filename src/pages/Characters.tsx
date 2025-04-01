@@ -55,7 +55,7 @@ const Characters = () => {
   ];
 
   return (
-    <div className="max-w-[1600px] mx-auto p-8 bg-gray-950 min-h-screen">
+    <div className="min-h-screen bg-black p-8">
       <div className="space-y-8">
         {/* Header */}
         <div className="flex justify-between items-center">
