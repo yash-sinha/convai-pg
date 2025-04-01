@@ -1,4 +1,4 @@
-# Tabbed Mock Generator
+# Convai
 
 A modern web application for creating and managing AI-powered characters and experiences for immersive, interactive storytelling.
 
@@ -26,8 +26,8 @@ This project is a React-based web application built with Vite, TypeScript, and T
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/yourusername/tabbed-mock-generator.git
-   cd tabbed-mock-generator
+   git clone https://github.com/yourusername/convai.git
+   cd convai
    ```
 
 2. Install dependencies

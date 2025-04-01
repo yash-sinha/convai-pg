@@ -16,7 +16,7 @@ interface ProjectStore {
 export const useProjectStore = create<ProjectStore>((set) => ({
   projects: [
     { id: "1", orgId: "1", name: "default-project", description: "Default project" },
-    { id: "2", orgId: "1", name: "mock-ui", description: "Mock UI project" },
+    { id: "2", orgId: "1", name: "convai-ui", description: "Convai UI project" },
     { id: "3", orgId: "2", name: "demo-app", description: "Demo application" },
     { id: "4", orgId: "2", name: "test-app", description: "Testing application" },
     { id: "5", orgId: "3", name: "ai-chat", description: "AI Chat application" },

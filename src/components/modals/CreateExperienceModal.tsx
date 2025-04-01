@@ -33,7 +33,7 @@ const CreateExperienceModal = ({ open, onOpenChange }: CreateExperienceModalProp
       </h1>
 
       <p className="text-lg text-gray-400 mb-8">
-        Create a new experience template for your mock interactions.
+        Create a new experience template for your AI interactions.
       </p>
 
       <form onSubmit={handleSubmit}>
