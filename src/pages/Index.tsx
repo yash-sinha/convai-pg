@@ -6,10 +6,12 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import CreateCharacterModal from "@/components/modals/CreateCharacterModal";
+import CreateExperienceModal from "@/components/modals/CreateExperienceModal";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [createCharacterOpen, setCreateCharacterOpen] = useState(false);
+  const [createExperienceOpen, setCreateExperienceOpen] = useState(false);
 
   const recentCharacters = [
     {
@@ -181,6 +183,7 @@ const Index = () => {
               <Button
                 variant="outline"
                 className="h-12 px-8 bg-black/30 backdrop-blur-sm border-neutral-700/50 text-gray-200 rounded-xl hover:bg-emerald-500/10 hover:border-emerald-500/30 hover:text-emerald-400 transition-all duration-300 font-medium flex items-center justify-center gap-2"
+                onClick={() => setCreateExperienceOpen(true)}
               >
                 <Plus className="h-5 w-5" />
                 <span>New Experience</span>
@@ -291,10 +294,14 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Create Character Modal */}
+      {/* Modals */}
       <CreateCharacterModal 
         open={createCharacterOpen}
         onOpenChange={setCreateCharacterOpen}
+      />
+      <CreateExperienceModal
+        open={createExperienceOpen}
+        onOpenChange={setCreateExperienceOpen}
       />
     </div>
   );
