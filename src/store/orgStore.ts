@@ -5,15 +5,16 @@ export type Role = "Owner" | "Admin" | "Member";
 export type Status = "Active" | "Pending Invite" | "Pending Approval";
 export type ProjectTier = "Free" | "Pro" | "Enterprise";
 
-interface Member {
+export interface Member {
   id: string;
   email: string;
+  name: string;
   role: Role;
   status: Status;
   addedDate: string;
 }
 
-interface Project {
+export interface Project {
   id: string;
   name: string;
   visibility: Visibility;
@@ -23,7 +24,7 @@ interface Project {
   tier: ProjectTier;
 }
 
-interface Organization {
+export interface Organization {
   id: string;
   name: string;
   defaultProjectVisibility: Visibility;
@@ -31,7 +32,7 @@ interface Organization {
   projects: Project[];
 }
 
-interface Document {
+export interface Document {
   id: string;
   name: string;
   type: string;
@@ -40,7 +41,7 @@ interface Document {
   uploadDate: string;
 }
 
-interface OrgStore {
+export interface OrgStore {
   organizations: Organization[];
   projects: Project[];
   selectedOrgId: string | null;
@@ -51,6 +52,10 @@ interface OrgStore {
   setSelectedProjectAndOrg: (projectId: string) => void;
   setProjects: (projects: Project[]) => void;
   moveProject: (projectId: string, newOrgId: string) => void;
+  addOrg: (org: Pick<Organization, 'id' | 'name'>) => void;
+  deleteOrg: (orgId: string) => void;
+  deleteProject: (projectId: string) => void;
+  joinProject: (projectId: string, member: Member) => void;
 }
 
 const mockDocuments: Document[] = [
@@ -86,10 +91,38 @@ const mockOrgs: Organization[] = [
     name: "Acme Corp",
     defaultProjectVisibility: "Private" as Visibility,
     members: [
-      { id: "m1", email: "john@acme.com", role: "Owner", status: "Active", addedDate: "2024-01-15" },
-      { id: "m2", email: "sarah@acme.com", role: "Admin", status: "Active", addedDate: "2024-01-20" },
-      { id: "m3", email: "mike@gmail.com", role: "Member", status: "Pending Invite", addedDate: "2024-03-25" },
-      { id: "m4", email: "lisa@outlook.com", role: "Member", status: "Pending Approval", addedDate: "2024-03-28" }
+      {
+        id: "m1",
+        name: "John Doe",
+        email: "john@acme.com",
+        role: "Owner",
+        status: "Active",
+        addedDate: "2024-01-15"
+      },
+      {
+        id: "m2",
+        name: "Sarah Lee",
+        email: "sarah@acme.com",
+        role: "Admin",
+        status: "Active",
+        addedDate: "2024-01-20"
+      },
+      {
+        id: "m3",
+        name: "Mike Davis",
+        email: "mike@gmail.com",
+        role: "Member",
+        status: "Pending Invite",
+        addedDate: "2024-03-25"
+      },
+      {
+        id: "m4",
+        name: "Lisa Nguyen",
+        email: "lisa@outlook.com",
+        role: "Member",
+        status: "Pending Approval",
+        addedDate: "2024-03-28"
+      }
     ],
     projects: [
       {
@@ -100,8 +133,22 @@ const mockOrgs: Organization[] = [
         orgId: "org1",
         tier: "Enterprise" as ProjectTier,
         members: [
-          { id: "pm1", email: "john@acme.com", role: "Owner", status: "Active", addedDate: "2024-01-15" },
-          { id: "pm2", email: "sarah@acme.com", role: "Admin", status: "Active", addedDate: "2024-01-15" }
+          {
+            id: "pm1",
+            name: "John Doe",
+            email: "john@acme.com",
+            role: "Owner",
+            status: "Active",
+            addedDate: "2024-01-15"
+          },
+          {
+            id: "pm2",
+            name: "Sarah Lee",
+            email: "sarah@acme.com",
+            role: "Admin",
+            status: "Active",
+            addedDate: "2024-01-15"
+          }
         ]
       },
       {
@@ -112,8 +159,22 @@ const mockOrgs: Organization[] = [
         orgId: "org1",
         tier: "Pro" as ProjectTier,
         members: [
-          { id: "pm3", email: "john@acme.com", role: "Owner", status: "Active", addedDate: "2024-02-01" },
-          { id: "pm4", email: "sarah@acme.com", role: "Member", status: "Active", addedDate: "2024-02-01" }
+          {
+            id: "pm3",
+            name: "John Doe",
+            email: "john@acme.com",
+            role: "Owner",
+            status: "Active",
+            addedDate: "2024-02-01"
+          },
+          {
+            id: "pm4",
+            name: "Sarah Lee",
+            email: "sarah@acme.com",
+            role: "Member",
+            status: "Active",
+            addedDate: "2024-02-01"
+          }
         ]
       }
     ]
@@ -123,9 +184,30 @@ const mockOrgs: Organization[] = [
     name: "TechStart Solutions",
     defaultProjectVisibility: "Public" as Visibility,
     members: [
-      { id: "m5", email: "alex@techstart.io", role: "Owner", status: "Active", addedDate: "2024-02-01" },
-      { id: "m6", email: "emma@techstart.io", role: "Admin", status: "Active", addedDate: "2024-02-05" },
-      { id: "m7", email: "david@company.com", role: "Member", status: "Pending Invite", addedDate: "2024-03-20" }
+      {
+        id: "m5",
+        name: "Alex Brown",
+        email: "alex@techstart.io",
+        role: "Owner",
+        status: "Active",
+        addedDate: "2024-02-01"
+      },
+      {
+        id: "m6",
+        name: "Emma Taylor",
+        email: "emma@techstart.io",
+        role: "Admin",
+        status: "Active",
+        addedDate: "2024-02-05"
+      },
+      {
+        id: "m7",
+        name: "David White",
+        email: "david@company.com",
+        role: "Member",
+        status: "Pending Invite",
+        addedDate: "2024-03-20"
+      }
     ],
     projects: [
       {
@@ -136,8 +218,22 @@ const mockOrgs: Organization[] = [
         orgId: "org2",
         tier: "Enterprise" as ProjectTier,
         members: [
-          { id: "pm5", email: "alex@techstart.io", role: "Owner", status: "Active", addedDate: "2024-02-10" },
-          { id: "pm6", email: "emma@techstart.io", role: "Admin", status: "Active", addedDate: "2024-02-10" }
+          {
+            id: "pm5",
+            name: "Alex Brown",
+            email: "alex@techstart.io",
+            role: "Owner",
+            status: "Active",
+            addedDate: "2024-02-10"
+          },
+          {
+            id: "pm6",
+            name: "Emma Taylor",
+            email: "emma@techstart.io",
+            role: "Admin",
+            status: "Active",
+            addedDate: "2024-02-10"
+          }
         ]
       }
     ]
@@ -147,10 +243,38 @@ const mockOrgs: Organization[] = [
     name: "Creative Studios",
     defaultProjectVisibility: "Private" as Visibility,
     members: [
-      { id: "m8", email: "sam@creative.co", role: "Owner", status: "Active", addedDate: "2024-01-10" },
-      { id: "m9", email: "maya@creative.co", role: "Admin", status: "Active", addedDate: "2024-01-12" },
-      { id: "m10", email: "tom@freelance.com", role: "Member", status: "Active", addedDate: "2024-02-15" },
-      { id: "m11", email: "nina@design.com", role: "Member", status: "Pending Approval", addedDate: "2024-03-27" }
+      {
+        id: "m8",
+        name: "Sam Johnson",
+        email: "sam@creative.co",
+        role: "Owner",
+        status: "Active",
+        addedDate: "2024-01-10"
+      },
+      {
+        id: "m9",
+        name: "Maya Williams",
+        email: "maya@creative.co",
+        role: "Admin",
+        status: "Active",
+        addedDate: "2024-01-12"
+      },
+      {
+        id: "m10",
+        name: "Tom Harris",
+        email: "tom@freelance.com",
+        role: "Member",
+        status: "Active",
+        addedDate: "2024-02-15"
+      },
+      {
+        id: "m11",
+        name: "Nina Martin",
+        email: "nina@design.com",
+        role: "Member",
+        status: "Pending Approval",
+        addedDate: "2024-03-27"
+      }
     ],
     projects: [
       {
@@ -161,9 +285,30 @@ const mockOrgs: Organization[] = [
         orgId: "org3",
         tier: "Pro" as ProjectTier,
         members: [
-          { id: "pm7", email: "sam@creative.co", role: "Owner", status: "Active", addedDate: "2024-01-20" },
-          { id: "pm8", email: "maya@creative.co", role: "Admin", status: "Active", addedDate: "2024-01-20" },
-          { id: "pm9", email: "tom@freelance.com", role: "Member", status: "Active", addedDate: "2024-02-15" }
+          {
+            id: "pm7",
+            name: "Sam Johnson",
+            email: "sam@creative.co",
+            role: "Owner",
+            status: "Active",
+            addedDate: "2024-01-20"
+          },
+          {
+            id: "pm8",
+            name: "Maya Williams",
+            email: "maya@creative.co",
+            role: "Admin",
+            status: "Active",
+            addedDate: "2024-01-20"
+          },
+          {
+            id: "pm9",
+            name: "Tom Harris",
+            email: "tom@freelance.com",
+            role: "Member",
+            status: "Active",
+            addedDate: "2024-02-15"
+          }
         ]
       },
       {
@@ -174,8 +319,22 @@ const mockOrgs: Organization[] = [
         orgId: "org3",
         tier: "Free" as ProjectTier,
         members: [
-          { id: "pm10", email: "sam@creative.co", role: "Owner", status: "Active", addedDate: "2024-02-15" },
-          { id: "pm11", email: "maya@creative.co", role: "Member", status: "Active", addedDate: "2024-02-15" }
+          {
+            id: "pm10",
+            name: "Sam Johnson",
+            email: "sam@creative.co",
+            role: "Owner",
+            status: "Active",
+            addedDate: "2024-02-15"
+          },
+          {
+            id: "pm11",
+            name: "Maya Williams",
+            email: "maya@creative.co",
+            role: "Member",
+            status: "Active",
+            addedDate: "2024-02-15"
+          }
         ]
       },
       {
@@ -186,22 +345,36 @@ const mockOrgs: Organization[] = [
         orgId: "org3",
         tier: "Pro" as ProjectTier,
         members: [
-          { id: "pm12", email: "sam@creative.co", role: "Owner", status: "Active", addedDate: "2024-03-01" },
-          { id: "pm13", email: "tom@freelance.com", role: "Admin", status: "Active", addedDate: "2024-03-01" }
+          {
+            id: "pm12",
+            name: "Sam Johnson",
+            email: "sam@creative.co",
+            role: "Owner",
+            status: "Active",
+            addedDate: "2024-03-01"
+          },
+          {
+            id: "pm13",
+            name: "Tom Harris",
+            email: "tom@freelance.com",
+            role: "Admin",
+            status: "Active",
+            addedDate: "2024-03-01"
+          }
         ]
       }
     ]
   }
 ];
 
-export const useOrgStore = create<OrgStore>((set) => ({
+export const useOrgStore = create<OrgStore>((set, get) => ({
   organizations: mockOrgs,
   projects: mockOrgs[0].projects,
-  selectedOrgId: "org1",
-  selectedProjectId: "p1",
+  selectedOrgId: mockOrgs[0].id,
+  selectedProjectId: mockOrgs[0].projects[0].id,
   documents: mockDocuments,
   setSelectedOrg: (id) => set((state) => {
-    const org = mockOrgs.find(o => o.id === id);
+    const org = state.organizations.find(o => o.id === id);
     return {
       selectedOrgId: id,
       selectedProjectId: null,
@@ -236,4 +409,59 @@ export const useOrgStore = create<OrgStore>((set) => ({
       selectedProjectId: projectId,
     };
   }),
+  addOrg: (org) => {
+    const newOrg: Organization = {
+      ...org,
+      defaultProjectVisibility: "Private",
+      members: [],
+      projects: [],
+    };
+    set((state) => ({
+      organizations: [...state.organizations, newOrg],
+    }));
+  },
+  deleteOrg: (orgId) => {
+    set((state) => {
+      // Remove the organization
+      const newOrgs = state.organizations.filter(org => org.id !== orgId);
+      
+      // Remove all projects belonging to this org
+      const newProjects = state.projects.filter(project => project.orgId !== orgId);
+      
+      // Clear selection if the deleted org was selected
+      const newState: Partial<OrgStore> = {
+        organizations: newOrgs,
+        projects: newProjects,
+      };
+      
+      if (state.selectedOrgId === orgId) {
+        newState.selectedOrgId = null;
+        newState.selectedProjectId = null;
+      }
+      
+      return newState;
+    });
+  },
+  deleteProject: (projectId) => {
+    const { organizations } = get();
+    set({
+      organizations: organizations.map(org => ({
+        ...org,
+        projects: org.projects.filter(p => p.id !== projectId)
+      }))
+    });
+  },
+  joinProject: (projectId, member) => {
+    const { organizations } = get();
+    set({
+      organizations: organizations.map(org => ({
+        ...org,
+        projects: org.projects.map(project => 
+          project.id === projectId
+            ? { ...project, members: [...project.members, member] }
+            : project
+        )
+      }))
+    });
+  }
 }));

@@ -65,11 +65,11 @@ const Analytics = () => {
   ];
 
   return (
-    <div className="max-w-5xl mx-auto p-8">
+    <div className="container mx-auto py-8 max-w-7xl">
       <div className="space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-semibold text-emerald-400">Analytics</h1>
+          <h1 className="text-2xl font-semibold text-gray-200">Analytics</h1>
           <p className="text-gray-400 mt-1">
             {selectedProject 
               ? `Analytics for ${selectedOrg?.name} / ${selectedProject.name}`
@@ -81,9 +81,9 @@ const Analytics = () => {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {stats.map((stat) => (
-            <Card key={stat.title} className="p-6 bg-gray-900/50 border-neutral-800/30 rounded-xl hover:border-neutral-800/50 transition-colors">
+            <Card key={stat.title} className="p-6 bg-neutral-900/50 border-neutral-800/30 rounded-xl hover:border-neutral-800/50 transition-colors">
               <div className="flex items-center justify-between">
                 <stat.icon className="h-5 w-5 text-emerald-400" />
                 <span className={`text-sm font-medium ${
@@ -101,11 +101,11 @@ const Analytics = () => {
         </div>
 
         {/* Charts Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
           {/* Interactions Over Time */}
-          <Card className="p-6 bg-gray-900/50 border-neutral-800/30 rounded-xl hover:border-neutral-800/50 transition-colors">
-            <h3 className="text-lg font-semibold text-emerald-400 mb-4">Interactions Over Time</h3>
-            <div className="h-[300px]">
+          <Card className="p-6 bg-neutral-900/50 border-neutral-800/30 rounded-xl hover:border-neutral-800/50 transition-colors">
+            <h3 className="text-lg font-semibold text-gray-200 mb-4">Interactions Over Time</h3>
+            <div className="h-[400px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={interactionData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -130,9 +130,9 @@ const Analytics = () => {
           </Card>
 
           {/* Character Usage Distribution */}
-          <Card className="p-6 bg-gray-900/50 border-neutral-800/30 rounded-xl hover:border-neutral-800/50 transition-colors">
-            <h3 className="text-lg font-semibold text-emerald-400 mb-4">Character Usage Distribution</h3>
-            <div className="h-[300px]">
+          <Card className="p-6 bg-neutral-900/50 border-neutral-800/30 rounded-xl hover:border-neutral-800/50 transition-colors">
+            <h3 className="text-lg font-semibold text-gray-200 mb-4">Character Usage Distribution</h3>
+            <div className="h-[400px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -161,9 +161,9 @@ const Analytics = () => {
           </Card>
 
           {/* Character Performance */}
-          <Card className="lg:col-span-2 p-6 bg-gray-900/50 border-neutral-800/30 rounded-xl hover:border-neutral-800/50 transition-colors">
-            <h3 className="text-lg font-semibold text-emerald-400 mb-4">Character Performance</h3>
-            <div className="h-[300px]">
+          <Card className="xl:col-span-2 p-6 bg-neutral-900/50 border-neutral-800/30 rounded-xl hover:border-neutral-800/50 transition-colors">
+            <h3 className="text-lg font-semibold text-gray-200 mb-4">Character Performance</h3>
+            <div className="h-[400px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={characterData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />

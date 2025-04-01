@@ -23,27 +23,22 @@ const navigation = [
   {
     name: "Characters",
     href: "/characters",
-    icon: Users,
+    icon: UserSquare2,
   },
   {
     name: "Templates",
     href: "/templates",
-    icon: UserSquare2,
+    icon: FileText,
   },
   {
     name: "Experiences",
     href: "/experiences",
-    icon: Sparkles,
+    icon: Users,
   },
   {
     name: "Analytics",
     href: "/analytics",
     icon: BarChart,
-  },
-  {
-    name: "Billing",
-    href: "/billing",
-    icon: CreditCard,
   },
   {
     name: "Knowledge Bank",
@@ -56,8 +51,13 @@ const navigation = [
     icon: Key,
   },
   {
+    name: "Billing",
+    href: null, // We'll compute this dynamically for billing
+    icon: CreditCard,
+  },
+  {
     name: "Manage Project",
-    href: null, // We'll compute this dynamically
+    href: null, // We'll compute this dynamically for project settings
     icon: Settings,
   },
 ];
@@ -85,9 +85,16 @@ const Sidebar = () => {
 
         <div className="space-y-1">
           {navigation.map((item) => {
-            const href = item.href === null ? `/project-settings/${selectedProjectId}` : item.href;
+            let href = item.href;
+            if (item.name === "Manage Project") {
+              href = `/project-settings/${selectedProjectId}`;
+            } else if (item.name === "Billing") {
+              href = `/billing/${selectedProjectId}`;
+            }
+            
             const isActive = location.pathname === href || 
-              (item.name === "Manage Project" && location.pathname.startsWith("/project-settings"));
+              (item.name === "Manage Project" && location.pathname.startsWith("/project-settings")) ||
+              (item.name === "Billing" && location.pathname.startsWith("/billing"));
             
             return (
               <Link

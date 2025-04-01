@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProjectBreadcrumb from "@/components/project/ProjectBreadcrumb";
@@ -7,6 +6,8 @@ import AccessRequest from "@/components/project/AccessRequest";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Save } from "lucide-react";
 
 // Mock data for the project - would normally come from an API
 const getProjectData = (projectId: string) => {
@@ -172,18 +173,55 @@ const ProjectManagement = () => {
         </TabsContent>
         
         <TabsContent value="settings" className="mt-6">
-          <Card className="border-green-100">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-xl text-green-800">Project Settings</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <p><span className="font-medium">Project Name:</span> {project.name}</p>
-                <p><span className="font-medium">Project ID:</span> {projectId}</p>
-                <p><span className="font-medium">Created:</span> January 15, 2023</p>
-                <p><span className="font-medium">Last Modified:</span> May 20, 2023</p>
+          <Card className="p-6 bg-black/20 border-neutral-800/30">
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-lg font-medium text-gray-200 mb-4">Project Settings</h3>
+                <Card className="p-6 bg-neutral-900/50 border-neutral-800/30 rounded-xl hover:border-neutral-800/50 transition-colors">
+                  <div className="space-y-6">
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-medium text-gray-200">Project Name</h3>
+                      <Input
+                        id="projectName"
+                        value={project.name}
+                        className="bg-black/40 border-neutral-800 text-gray-200 h-10"
+                        placeholder="Enter project name"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-medium text-gray-200">Project ID</h3>
+                      <Input
+                        id="projectId"
+                        value={projectId}
+                        className="bg-black/40 border-neutral-800 text-gray-200 h-10"
+                        disabled
+                      />
+                      <p className="text-xs text-gray-400">Project ID cannot be changed after creation.</p>
+                    </div>
+                    <div className="pt-2">
+                      <Button className="bg-neutral-800 hover:bg-neutral-700 text-gray-200 rounded-lg">
+                        <Save className="mr-2 h-4 w-4" /> Save Changes
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
               </div>
-            </CardContent>
+
+              <div>
+                <h3 className="text-lg font-medium text-gray-200 mb-4">Danger Zone</h3>
+                <Card className="p-6 bg-red-950/20 border-red-500/20 rounded-xl hover:border-red-500/30 transition-colors">
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-200">Delete Project</h4>
+                      <p className="text-sm text-gray-400 mt-1">Once you delete a project, there is no going back. Please be certain.</p>
+                    </div>
+                    <Button variant="destructive" className="bg-red-600 hover:bg-red-700 text-white">
+                      Delete Project
+                    </Button>
+                  </div>
+                </Card>
+              </div>
+            </div>
           </Card>
         </TabsContent>
       </Tabs>

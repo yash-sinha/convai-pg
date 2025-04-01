@@ -8,7 +8,7 @@ import Index from "./pages/Index";
 import Characters from "./pages/Characters";
 import Organizations from "./pages/Organizations";
 import Experiences from "./pages/Experiences";
-import Billing from "./pages/Billing";
+import Billing from "@/pages/Billing";
 import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 import OrgSettings from "./pages/OrgSettings";
@@ -37,11 +37,13 @@ function App() {
                 <Route path="/characters" element={<Characters />} />
                 <Route path="/templates" element={<Templates />} />
                 <Route path="/experiences" element={<Experiences />} />
-                <Route path="/billing" element={<Billing />} />
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/knowledge-bank" element={<KnowledgeBank />} />
                 <Route path="/api-keys" element={<ApiKeys />} />
                 <Route path="/project-settings/:projectId" element={<ProjectSettings />} />
+                <Route path="/billing/:projectId" element={<Billing />} />
+                <Route path="/billing" element={<Billing />} />
+                <Route path="/org-settings/:orgId" element={<OrgSettings />} />
                 <Route path="/org-settings" element={<OrgSettings />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

@@ -55,17 +55,22 @@ const Characters = () => {
   ];
 
   return (
-    <div className="space-y-6 p-8 bg-gray-950 min-h-screen">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-emerald-400">My Characters</h1>
-        <Button className="bg-emerald-500 hover:bg-emerald-600 text-white">
-          <PlusIcon className="mr-2 h-4 w-4" /> Create new character
-        </Button>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {characters.map((character) => (
-          <CharacterCard key={character.name} {...character} />
-        ))}
+    <div className="max-w-[1600px] mx-auto p-8 bg-gray-950 min-h-screen">
+      <div className="space-y-8">
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-semibold text-gray-200">My Characters</h1>
+          <Button 
+            className="bg-neutral-800 hover:bg-neutral-700 text-gray-200 rounded-lg"
+          >
+            <PlusIcon className="mr-2 h-4 w-4" /> Create new character
+          </Button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {characters.map((character) => (
+            <CharacterCard key={character.name} {...character} />
+          ))}
+        </div>
       </div>
     </div>
   );

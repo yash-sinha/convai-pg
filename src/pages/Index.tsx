@@ -51,13 +51,16 @@ const Index = () => {
   ];
 
   return (
-    <div className="space-y-8 p-8 bg-gray-950 min-h-screen">
+    <div className="max-w-[1600px] mx-auto p-8 bg-gray-950 min-h-screen">
       {/* Recent Characters Section */}
       <section>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-emerald-400">Recent Characters</h2>
+          <h2 className="text-2xl font-bold text-gray-200">Recent Characters</h2>
           <Link to="/characters">
-            <Button variant="ghost" className="text-emerald-400 hover:text-emerald-300 hover:bg-[#1a2234]">
+            <Button 
+              className="bg-neutral-800 hover:bg-neutral-700 text-gray-200 rounded-lg"
+              variant="ghost"
+            >
               See all characters <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
@@ -72,9 +75,12 @@ const Index = () => {
       {/* Recent Experiences Section */}
       <section>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-emerald-400">Recent Experiences</h2>
+          <h2 className="text-2xl font-bold text-gray-200">Recent Experiences</h2>
           <Link to="/experiences">
-            <Button variant="ghost" className="text-emerald-400 hover:text-emerald-300 hover:bg-[#1a2234]">
+            <Button 
+              className="bg-neutral-800 hover:bg-neutral-700 text-gray-200 rounded-lg"
+              variant="ghost"
+            >
               See all experiences <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
