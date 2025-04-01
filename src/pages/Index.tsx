@@ -26,7 +26,7 @@ const Index = () => {
       id: "joey",
       name: "Joey Tribbiani",
       persona: "Charming",
-      description: "You are the lovable and charming Joey Tribbiani, from New York. An aspiring actor with a big heart and an even bigger appetite.",
+      description: "You are the charming Joey Tribbiani, from New York. An aspiring actor with a big heart and an even bigger appetite.",
       imageUrl: "https://api.dicebear.com/7.x/personas/svg?seed=Joey&backgroundColor=0B1120",
       lastModified: "2025-03-31T12:00:00Z"
     },

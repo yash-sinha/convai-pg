@@ -1,73 +1,86 @@
-# Welcome to your Lovable project
+# Tabbed Mock Generator
 
-## Project info
+A modern web application for creating and managing AI-powered characters and experiences for immersive, interactive storytelling.
 
-**URL**: https://lovable.dev/projects/49d7464d-607b-4b2a-89fb-019e3108db0a
+## Project Overview
 
-## How can I edit this code?
+This project is a React-based web application built with Vite, TypeScript, and Tailwind CSS. It provides a user-friendly interface for creating, managing, and interacting with AI characters and experiences.
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+- Character creation and management
+- Experience design and configuration
+- Analytics dashboard with interactive charts
+- Project and organization management
+- User authentication and permissions
+- Responsive design for all devices
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/49d7464d-607b-4b2a-89fb-019e3108db0a) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js (v16 or higher)
+- npm or yarn
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. Clone the repository
+   ```bash
+   git clone https://github.com/yourusername/tabbed-mock-generator.git
+   cd tabbed-mock-generator
+   ```
 
-Follow these steps:
+2. Install dependencies
+   ```bash
+   npm install
+   # or
+   yarn
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+3. Start the development server
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+4. Open your browser and navigate to `http://localhost:8080`
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Building for Production
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+npm run build
+# or
+yarn build
 ```
 
-**Edit a file directly in GitHub**
+## Technology Stack
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **Frontend Framework**: React with TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **State Management**: Zustand
+- **Routing**: React Router
+- **Charts**: Recharts
+- **Form Handling**: React Hook Form with Zod validation
 
-**Use GitHub Codespaces**
+## Project Structure
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- `/src`: Source code
+  - `/components`: Reusable UI components
+  - `/pages`: Page components
+  - `/store`: State management
+  - `/lib`: Utility functions
+  - `/styles`: Global styles
 
-## What technologies are used for this project?
+## Contributing
 
-This project is built with .
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## License
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/49d7464d-607b-4b2a-89fb-019e3108db0a) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+This project is licensed under the MIT License - see the LICENSE file for details.
