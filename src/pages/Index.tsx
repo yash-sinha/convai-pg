@@ -144,7 +144,7 @@ const Index = () => {
                   placeholder="Search across characters and experiences..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="relative z-10 w-full h-14 bg-black/50 backdrop-blur-xl text-white border-2 border-neutral-700/50 rounded-2xl pl-14 pr-14 focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/50 transition-all text-lg shadow-xl shadow-emerald-900/5 text-center placeholder:text-center placeholder:text-gray-300/70 hover:border-emerald-500/30 hover:shadow-emerald-500/20 hover:shadow-2xl group-hover:bg-emerald-950/20"
+                  className="relative z-10 w-full h-14 bg-black/50 backdrop-blur-xl text-white border-2 border-neutral-700/50 rounded-2xl pl-14 pr-14 focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/50 transition-all text-lg shadow-xl shadow-emerald-900/5 text-center placeholder:text-center placeholder:text-gray-300/70 placeholder:text-lg hover:border-emerald-500/30 hover:shadow-emerald-500/20 hover:shadow-2xl group-hover:bg-emerald-950/20"
                 />
                 <div className="absolute -inset-1 -z-10 bg-gradient-to-r from-emerald-500/0 via-emerald-500/10 to-emerald-500/0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity blur-xl group-hover:animate-pulse"/>
                 <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400 group-hover:text-emerald-400/70 transition-colors z-20" />
