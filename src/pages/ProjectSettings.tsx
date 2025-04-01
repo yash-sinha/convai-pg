@@ -30,6 +30,7 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useParams, useNavigate } from "react-router-dom";
 import { InviteMembersModal } from "@/components/modals/InviteMembersModal";
+import CreateCharacterModal from "@/components/modals/CreateCharacterModal";
 
 const BillingMetric = ({ 
   label, 
@@ -73,6 +74,7 @@ const ProjectSettings = () => {
   });
   const [targetOrgId, setTargetOrgId] = useState<string | null>(null);
   const [inviteMembersOpen, setInviteMembersOpen] = useState(false);
+  const [createCharacterOpen, setCreateCharacterOpen] = useState(false);
   const navigate = useNavigate();
 
   // Redirect to the project URL if coming from navbar
@@ -307,7 +309,10 @@ const ProjectSettings = () => {
                     Manage your project's character configurations.
                   </p>
                 </div>
-                <Button className="bg-neutral-800 hover:bg-neutral-700 text-gray-200">
+                <Button 
+                  className="bg-neutral-800 hover:bg-neutral-700 text-gray-200"
+                  onClick={() => setCreateCharacterOpen(true)}
+                >
                   <Plus className="mr-2 h-4 w-4" />
                   New Character
                 </Button>
@@ -517,6 +522,10 @@ const ProjectSettings = () => {
           // TODO: Handle member invites
           console.log("Inviting members:", emails, "with role:", role);
         }}
+      />
+      <CreateCharacterModal
+        open={createCharacterOpen}
+        onOpenChange={setCreateCharacterOpen}
       />
     </div>
   );
