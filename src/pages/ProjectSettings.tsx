@@ -92,6 +92,14 @@ const ProjectSettings = () => {
 
   return (
     <div className="px-8 py-6">
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold text-gray-200 mb-1">
+          {selectedProject?.name || "Project Settings"}
+        </h1>
+        <p className="text-sm text-gray-400">
+          Manage your project's settings, access, and configuration
+        </p>
+      </div>
       <Tabs defaultValue="general" className="space-y-6">
         <TabsList className="bg-black/20 border-neutral-800/30">
           <TabsTrigger value="general" className="data-[state=active]:bg-emerald-500/10 data-[state=active]:text-emerald-400">

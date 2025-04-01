@@ -8,10 +8,12 @@ import {
   DropdownMenuLabel
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Link, useNavigate } from "react-router-dom";
 import { useOrgStore } from "@/store/orgStore";
-import { ChevronDown, Building2, User, LogOut, Folder } from "lucide-react";
+import { ChevronDown, Building2, User, LogOut, Folder, Plus } from "lucide-react";
+import { useState } from "react";
 
 const NavBar = () => {
   const {
@@ -27,9 +29,18 @@ const NavBar = () => {
   const selectedOrg = organizations.find(org => org.id === selectedOrgId);
   const filteredProjects = projects.filter(proj => proj.orgId === selectedOrgId);
   const selectedProject = projects.find(proj => proj.id === selectedProjectId);
+  const [orgSearch, setOrgSearch] = useState("");
+  const [projectSearch, setProjectSearch] = useState("");
+
+  const filteredOrgs = organizations.filter(org => 
+    org.name.toLowerCase().includes(orgSearch.toLowerCase())
+  );
+  const searchedProjects = filteredProjects.filter(proj => 
+    proj.name.toLowerCase().includes(projectSearch.toLowerCase())
+  );
 
   return (
-    <div className="w-full border-b border-neutral-800/20 bg-black">
+    <div className="w-full border-b border-neutral-900/20 bg-black">
       <div className="flex h-16 items-center px-4">
         {/* Navigation Links */}
         <div className="flex items-center space-x-6">
@@ -57,7 +68,7 @@ const NavBar = () => {
           <DropdownMenuTrigger asChild>
             <Button 
               variant="ghost" 
-              className="flex items-center space-x-2 px-2 hover:bg-neutral-800/30"
+              className="flex items-center space-x-2 px-2 hover:bg-neutral-900/30"
             >
               <Building2 className="h-4 w-4 text-emerald-400" />
               <span className="text-sm text-gray-200">
@@ -66,20 +77,40 @@ const NavBar = () => {
               <ChevronDown className="h-4 w-4 text-gray-400" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 bg-gray-900/90 backdrop-blur-sm border-neutral-800/30 rounded-lg">
-            {organizations.map((org) => (
-              <DropdownMenuItem
-                key={org.id}
-                onClick={() => setSelectedOrg(org.id)}
-                className={cn(
-                  "flex items-center space-x-2 text-gray-200 rounded-md mx-1 my-0.5",
-                  selectedOrgId === org.id && "bg-emerald-500/10 text-emerald-400"
-                )}
+          <DropdownMenuContent align="end" className="w-72 bg-black border-neutral-800 rounded-lg shadow-lg">
+            <div className="p-2 border-b border-neutral-800">
+              <Input
+                placeholder="Search organizations..."
+                value={orgSearch}
+                onChange={(e) => setOrgSearch(e.target.value)}
+                className="h-8 bg-transparent text-gray-200 border-neutral-900 focus:ring-emerald-500/30"
+              />
+            </div>
+            <div className="py-2">
+              {filteredOrgs.map((org) => (
+                <DropdownMenuItem
+                  key={org.id}
+                  onClick={() => setSelectedOrg(org.id)}
+                  className={cn(
+                    "flex items-center space-x-2 text-gray-200 rounded-md mx-1 my-0.5",
+                    selectedOrgId === org.id && "bg-emerald-500/10 text-emerald-400"
+                  )}
+                >
+                  <Building2 className="h-4 w-4" />
+                  <span>{org.name}</span>
+                </DropdownMenuItem>
+              ))}
+            </div>
+            <div className="p-2 border-t border-neutral-800">
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start text-emerald-400 hover:bg-emerald-500/10"
+                onClick={() => navigate("/org-settings")}
               >
-                <Building2 className="h-4 w-4" />
-                <span>{org.name}</span>
-              </DropdownMenuItem>
-            ))}
+                <Plus className="h-4 w-4 mr-2" />
+                Create Organization
+              </Button>
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -88,7 +119,7 @@ const NavBar = () => {
           <DropdownMenuTrigger asChild>
             <Button 
               variant="ghost" 
-              className="ml-2 flex items-center space-x-2 px-2 hover:bg-neutral-800/30"
+              className="ml-2 flex items-center space-x-2 px-2 hover:bg-neutral-900/30"
               disabled={!selectedOrgId}
             >
               {selectedProject ? (
@@ -105,7 +136,7 @@ const NavBar = () => {
                       "text-xs",
                       {
                         "border-neutral-500 text-neutral-500": selectedProject.tier === "Free",
-                        "border-blue-500 text-blue-500": selectedProject.tier === "Pro",
+                        "border-emerald-500 text-emerald-400": selectedProject.tier === "Pro",
                         "border-purple-500 text-purple-500": selectedProject.tier === "Enterprise"
                       }
                     )}
@@ -125,32 +156,52 @@ const NavBar = () => {
               )}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-72 bg-gray-900/90 backdrop-blur-sm border-neutral-800/30 rounded-lg">
-            {filteredProjects.map((project) => (
-              <DropdownMenuItem
-                key={project.id}
-                onClick={() => setSelectedProject(project.id)}
-                className={cn(
-                  "flex items-center justify-between text-gray-200 rounded-md mx-1 my-0.5",
-                  selectedProjectId === project.id && "bg-emerald-500/10 text-emerald-400"
-                )}
-              >
-                <span>{project.name}</span>
-                <Badge
-                  variant="outline"
+          <DropdownMenuContent align="end" className="w-72 bg-black border-neutral-800 rounded-lg shadow-lg">
+            <div className="p-2 border-b border-neutral-800">
+              <Input
+                placeholder="Search projects..."
+                value={projectSearch}
+                onChange={(e) => setProjectSearch(e.target.value)}
+                className="h-8 bg-transparent text-gray-200 border-neutral-900 focus:ring-emerald-500/30"
+              />
+            </div>
+            <div className="py-2">
+              {searchedProjects.map((project) => (
+                <DropdownMenuItem
+                  key={project.id}
+                  onClick={() => setSelectedProject(project.id)}
                   className={cn(
-                    "text-xs",
-                    {
-                      "border-neutral-500 text-neutral-500": project.tier === "Free",
-                      "border-blue-500 text-blue-500": project.tier === "Pro",
-                      "border-purple-500 text-purple-500": project.tier === "Enterprise"
-                    }
+                    "flex items-center justify-between text-gray-200 rounded-md mx-1 my-0.5",
+                    selectedProjectId === project.id && "bg-emerald-500/10 text-emerald-400"
                   )}
                 >
-                  {project.tier}
-                </Badge>
-              </DropdownMenuItem>
-            ))}
+                  <span>{project.name}</span>
+                  <Badge
+                    variant="outline"
+                    className={cn(
+                      "text-xs",
+                      {
+                        "border-neutral-500 text-neutral-500": project.tier === "Free",
+                        "border-emerald-500 text-emerald-400": project.tier === "Pro",
+                        "border-purple-500 text-purple-500": project.tier === "Enterprise"
+                      }
+                    )}
+                  >
+                    {project.tier}
+                  </Badge>
+                </DropdownMenuItem>
+              ))}
+            </div>
+            <div className="p-2 border-t border-neutral-800">
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start text-emerald-400 hover:bg-emerald-500/10"
+                disabled={!selectedOrgId}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Create Project
+              </Button>
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -168,14 +219,14 @@ const NavBar = () => {
               />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 bg-black border-neutral-800/30 rounded-lg">
+          <DropdownMenuContent align="end" className="w-56 bg-black border-neutral-800 rounded-lg shadow-lg">
             <DropdownMenuLabel className="text-gray-400">
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none text-gray-200">John Doe</p>
                 <p className="text-xs leading-none">john@example.com</p>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator className="bg-neutral-800/30" />
+            <DropdownMenuSeparator className="bg-neutral-800" />
             <DropdownMenuItem 
               className="text-gray-200 rounded-md mx-1 my-0.5 focus:bg-emerald-500/10 focus:text-emerald-400"
               onClick={() => navigate("/org-settings")}
