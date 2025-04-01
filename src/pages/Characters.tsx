@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import CharacterCard from "@/components/character/CharacterCard";
 import { PlusIcon } from "lucide-react";
+import CreateCharacterModal from "@/components/modals/CreateCharacterModal";
+import { useState } from "react";
 
 const Characters = () => {
   const characters = [
@@ -54,24 +56,31 @@ const Characters = () => {
     }
   ];
 
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-black p-8">
-      <div className="space-y-8">
+      <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-gray-200">My Characters</h1>
           <Button 
-            className="bg-neutral-800 hover:bg-neutral-700 text-gray-200 rounded-lg"
+            className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20"
+            onClick={() => setCreateModalOpen(true)}
           >
             <PlusIcon className="mr-2 h-4 w-4" /> Create new character
           </Button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {characters.map((character) => (
             <CharacterCard key={character.name} {...character} />
           ))}
         </div>
       </div>
+      <CreateCharacterModal 
+        open={createModalOpen}
+        onOpenChange={setCreateModalOpen}
+      />
     </div>
   );
 };

@@ -53,7 +53,7 @@ const KnowledgeBank = () => {
             </p>
           </div>
           <Button 
-            className="bg-neutral-800 hover:bg-neutral-700 text-gray-200 rounded-lg"
+            className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20"
             onClick={handleFileUpload}
           >
             <Plus className="mr-2 h-4 w-4" /> Upload Document

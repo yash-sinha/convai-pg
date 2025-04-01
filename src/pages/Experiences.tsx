@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import ExperienceCard from "@/components/experience/ExperienceCard";
 import { PlusIcon } from "lucide-react";
+import CreateExperienceModal from "@/components/modals/CreateExperienceModal";
+import { useState } from "react";
 
 const Experiences = () => {
   const experiences = [
@@ -21,14 +23,17 @@ const Experiences = () => {
     }
   ];
 
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-black p-8">
-      <div className="space-y-8">
+      <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-gray-200">My Experiences</h1>
           <Button 
-            className="bg-neutral-800 hover:bg-neutral-700 text-gray-200 rounded-lg"
+            className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20"
+            onClick={() => setCreateModalOpen(true)}
           >
             <PlusIcon className="mr-2 h-4 w-4" /> Create new experience
           </Button>
@@ -39,6 +44,10 @@ const Experiences = () => {
           ))}
         </div>
       </div>
+      <CreateExperienceModal 
+        open={createModalOpen}
+        onOpenChange={setCreateModalOpen}
+      />
     </div>
   );
 };

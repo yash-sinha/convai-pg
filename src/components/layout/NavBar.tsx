@@ -11,8 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Link, useNavigate } from "react-router-dom";
-import { useOrgStore } from "@/store/orgStore";
-import { Project, ProjectTier } from "@/types/project";
+import { useOrgStore, Project, ProjectTier, Member, Visibility, Organization } from "@/store/orgStore";
 import { ChevronDown, Building2, User, LogOut, Folder, Plus, Trash2, Settings } from "lucide-react";
 import { useState } from "react";
 import { CreateOrgDialog } from "@/components/dialogs/CreateOrgDialog";
@@ -47,15 +46,27 @@ const NavBar = () => {
     proj.name.toLowerCase().includes(projectSearch.toLowerCase())
   );
 
-  const handleCreateOrg = (name: string) => {
-    console.log("Creating org:", name);
+  const handleCreateOrg = (name: string, teamMembers: string[]) => {
+    console.log("Creating org:", name, "with team members:", teamMembers);
     // Add org to store
-    const newOrg = {
+    const newOrg: Organization = {
       id: Math.random().toString(),
       name,
+      defaultProjectVisibility: "Private" as Visibility,
+      members: teamMembers.map(email => ({
+        id: Math.random().toString(),
+        email,
+        name: email.split('@')[0], // Use part before @ as name
+        role: "Member" as const,
+        status: "Pending Invite" as const,
+        addedDate: new Date().toISOString(),
+      })),
+      projects: [],
     };
     useOrgStore.getState().addOrg(newOrg);
     useOrgStore.getState().setSelectedOrg(newOrg.id);
+    // Navigate to the new org's settings page
+    navigate(`/org-settings/${newOrg.id}`);
   };
 
   const handleCreateOrgClick = () => {
@@ -248,7 +259,7 @@ const NavBar = () => {
               <DropdownMenuTrigger asChild>
                 <Button 
                   variant="ghost" 
-                  className="relative h-8 w-8 rounded-full ring-offset-black transition-all hover:ring-2 hover:ring-emerald-500/30 hover:ring-offset-2 overflow-hidden p-0 ml-2"
+                  className="relative h-10 w-10 rounded-full ring-offset-black transition-all hover:ring-2 hover:ring-emerald-500/30 hover:ring-offset-2 overflow-hidden p-0 ml-2"
                 >
                   <img
                     src="/images/avatar.jpg"
@@ -293,10 +304,10 @@ const NavBar = () => {
           const newProject: Project = {
             id: String(projects.length + 1),
             name,
-            tier,
+            tier: tier as ProjectTier,
             orgId: selectedOrgId!,
-            visibility: "Private" as const,
-            members: [],
+            visibility: "Private" as Visibility,
+            members: [] as Member[],
             createdDate: new Date().toISOString(),
           };
           setProjects([...projects, newProject]);

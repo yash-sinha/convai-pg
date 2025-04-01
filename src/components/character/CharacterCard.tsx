@@ -53,34 +53,34 @@ const CharacterCard = ({ name, persona, description, imageUrl }: CharacterCardPr
           <Video className="h-4 w-4" />
         </Button>
       </div>
-      <CardHeader className="pb-2">
+      <CardHeader className="pb-1 pt-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg text-gray-200">{name}</CardTitle>
+          <CardTitle className="text-base text-gray-200">{name}</CardTitle>
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-sm font-medium text-gray-300 mb-2">
+        <p className="text-xs font-medium text-gray-300 mb-1">
           {persona}
         </p>
-        <p className="text-sm text-gray-400 line-clamp-3">
+        <p className="text-xs text-gray-400 line-clamp-2">
           {description || getDefaultDescription(persona)}
         </p>
-        <div className="mt-4 flex justify-between border-t border-neutral-800 pt-4">
+        <div className="mt-3 flex justify-between border-t border-neutral-800 pt-3">
           <Button 
             variant="ghost" 
             size="sm" 
             onClick={handleEdit} 
-            className="text-gray-300 hover:text-gray-200 hover:bg-neutral-800/50 px-2"
+            className="text-gray-300 hover:text-gray-200 hover:bg-neutral-800/50 px-2 h-7 text-xs"
           >
-            <Edit className="h-4 w-4 mr-1" /> Edit
+            <Edit className="h-3 w-3 mr-1" /> Edit
           </Button>
           <Button 
             variant="ghost" 
             size="sm" 
             onClick={handleDelete} 
-            className="text-red-400 hover:text-red-300 hover:bg-neutral-800/50 px-2"
+            className="text-red-400 hover:text-red-300 hover:bg-neutral-800/50 px-2 h-7 text-xs"
           >
-            <Trash2 className="h-4 w-4 mr-1" /> Delete
+            <Trash2 className="h-3 w-3 mr-1" /> Delete
           </Button>
         </div>
       </CardContent>

@@ -33,7 +33,7 @@ const ApiKeys = () => {
             </p>
           </div>
           <Button 
-            className="bg-neutral-800 hover:bg-neutral-700 text-gray-200 rounded-lg"
+            className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20"
           >
             <Plus className="mr-2 h-4 w-4" /> Create API Key
           </Button>
@@ -68,8 +68,9 @@ const ApiKeys = () => {
                   <TableCell className="text-right">
                     <Button
                       variant="ghost"
-                      size="sm"
-                      className="text-gray-400 hover:text-emerald-400"
+                      size="icon"
+                      className="hover:bg-emerald-500/10 hover:text-emerald-400"
+                      onClick={() => navigator.clipboard.writeText(apiKey.key)}
                     >
                       <Copy className="h-4 w-4" />
                     </Button>

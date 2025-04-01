@@ -15,10 +15,10 @@ const SidebarItem = ({ icon: Icon, label, path, active }: SidebarItemProps) => {
       to={path}
       className={cn(
         "relative flex items-center px-3 h-10 rounded-lg transition-all",
-        "hover:bg-emerald-500/10 hover:text-emerald-400",
+        "hover:bg-emerald-500/5 hover:text-emerald-400/80",
         active 
           ? "text-emerald-400 bg-emerald-500/10" 
-          : "text-gray-500 hover:text-emerald-400"
+          : "text-gray-500 hover:text-emerald-400/80"
       )}
       title={label}
     >

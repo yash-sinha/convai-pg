@@ -36,9 +36,9 @@ const Templates = () => {
             </p>
           </div>
           <Button 
-            className="bg-neutral-800 hover:bg-neutral-700 text-gray-200 rounded-lg"
+            className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20"
           >
-            <Plus className="mr-2 h-4 w-4" /> Create Template
+            <Plus className="mr-2 h-4 w-4" /> Create new template
           </Button>
         </div>
 
@@ -58,7 +58,7 @@ const Templates = () => {
                 <h3 className="text-lg font-medium text-gray-200">{template.name}</h3>
                 <p className="mt-1 text-sm text-gray-400">{template.description}</p>
                 <div className="mt-3">
-                  <span className="inline-flex items-center rounded-md bg-neutral-800/50 px-2 py-1 text-xs font-medium text-gray-200 ring-1 ring-inset ring-neutral-800">
+                  <span className="inline-flex items-center rounded-md bg-neutral-800/50 px-2 py-1 text-xs font-medium text-gray-200 ring-1 ring-inset ring-neutral-700">
                     {template.category}
                   </span>
                 </div>
@@ -66,7 +66,7 @@ const Templates = () => {
               <div className="mt-6 flex justify-end">
                 <Button 
                   variant="ghost" 
-                  className="bg-neutral-800 hover:bg-neutral-700 text-gray-200"
+                  className="bg-neutral-800/50 hover:bg-neutral-700 text-gray-200 border border-neutral-700"
                 >
                   Use Template
                 </Button>
